@@ -44,6 +44,7 @@ There seems to be 5 possible value for the first byte.
  - 0x01 sets the current profile to one whose page is in the next byte. (10 00 0F 01 03 00 set the current profile to the one in page 0x03).
  - 0x02 looks similar to 0x00.
  - 0x03 looks similar to 0x01.
+
 Other values will get an error message.
 
 When reading, the first byte will be 0x00 if a profile from memory is used or 0xFF if no profile is used.
@@ -119,23 +120,23 @@ These long report performs operations on the internal memory. Following bytes in
  - Byte 12-15: unknown
 
 The known operation are:
- - 2: Fill the *destination page* with 0xFF (does not use *offset* or *length*). This this usefull before ORing data.
+ - 2: Fill the *destination page* with 0xFF (does not use *offset* or *length*). This this useful before ORing data.
  - 3: Copy or OR *length* bytes of data in page 0 to the *destination page* at *destination offset*
- - 4: Copy or OR *source length* bytes from *source offset* from an unknown static source of data at *destination offset* in *destination offset*. I have seen the report in Vladyslav Shtabovenko's g500-control.c, SetPoint then read what was written but I don't why.
+ - 4: Copy or OR *source length* bytes from *source offset* from an unknown static source of data at *destination offset* in *destination offset*. I have seen the report in Vladyslav Shtabovenko's g500-control.c, SetPoint then read what was written but I don't know why.
 
-Writting data works differently based on the page. In page 0, data replace the previous values. In other pages, the data is ORed, so you need to fill the page with 0xFF before writting in order to replace.
+Writing data works differently based on the page. In page 0, data replace the previous values. In other pages, the data is ORed, so you need to fill the page with 0xFF before writing in order to replace.
 
 
 #### Sequence number (0xA1)
 
-The only known report with this value is: `10 00 80 A1 01 00 00`. It is use for resetting the sequence number used by the memory writting reports (message type 0x90-0x93).
+The only known report with this value is: `10 00 80 A1 01 00 00`. It is used for resetting the sequence number used by the memory writing reports (message type 0x90-0x93).
 
 
 #### Reading memory (0xA2)
 
 This message is used to retrieve data (exactly 16 bytes) from the internal memory. The query parameters are the page and offset of the data you want to read. The answer last 16 bytes are the data.
 
-Here is an example of LGS reading the data juste after the profile (offset 0x27 means from 0x4E^th byte) in page 2. The data is a string (4C 47 53 30 32 = "LGS02") that LGS stores there for itself.
+Here is an example of LGS reading the data just after the profile (offset 0x27 means from 0x4E^th byte) in page 2. The data is a string (4C 47 53 30 32 = "LGS02") that LGS stores there for itself.
 ```
 out  10 00 83 A2 02 27 00
 in   11 00 83 A2 4C 47 53 30 32 00 00 00 00 00 00 00 00 00 00 00
