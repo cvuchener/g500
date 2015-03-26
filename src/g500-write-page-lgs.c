@@ -39,7 +39,7 @@ int main (int argc, char *argv[]) {
 	}
 	/* fill dest page with ff */
 	memset (&params, 0, sizeof (struct g500_mem_op_params_t));
-	params.op = 2;
+	params.op = G500_MEM_OP_FILL;
 	params.page = page;
 	if (-1 == logitech_query (fd, LOGITECH_SEND_LONG, G500_QUERY_TYPE_MEMORY_OP, (uint8_t *)&params, NULL)) {
 		fprintf (stderr, "Error during operation\n");
@@ -47,9 +47,10 @@ int main (int argc, char *argv[]) {
 	}
 	/* copy first block from temp memory to dest page */
 	memset (&params, 0, sizeof (struct g500_mem_op_params_t));
-	params.op = 3;
+	params.op = G500_MEM_OP_OR;
 	params.page = page;
 	params.offset = 0;
+	params.len = 256;
 	if (-1 == logitech_query (fd, LOGITECH_SEND_LONG, G500_QUERY_TYPE_MEMORY_OP, (uint8_t *)&params, NULL)) {
 		fprintf (stderr, "Error during operation\n");
 		return EXIT_FAILURE;
@@ -60,9 +61,10 @@ int main (int argc, char *argv[]) {
 	}
 	/* copy second block from temp memory to end of dest page */
 	memset (&params, 0, sizeof (struct g500_mem_op_params_t));
-	params.op = 3;
+	params.op = G500_MEM_OP_OR;
 	params.page = page;
 	params.offset = 0x80;
+	params.len = 256;
 	if (-1 == logitech_query (fd, LOGITECH_SEND_LONG, G500_QUERY_TYPE_MEMORY_OP, (uint8_t *)&params, NULL)) {
 		fprintf (stderr, "Error during operation\n");
 		return EXIT_FAILURE;
