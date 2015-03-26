@@ -1,4 +1,4 @@
-CC=gcc -fdiagnostics-color
+CC=gcc
 CFLAGS=-Wall -g -O0 -DDEBUG
 LDFLAGS=
 
