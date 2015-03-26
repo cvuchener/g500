@@ -34,8 +34,17 @@ int main (int argc, char *argv[]) {
 		else
 			printf ("\t");
 		switch (macro_item->type) {
-		case G500_MACRO_PADDING:
-			printf ("PADDING\n");
+		case G500_MACRO_NOOP:
+			printf ("NOOP\n");
+			break;
+		case G500_MACRO_WAIT_RELEASE:
+			printf ("WAIT WHILE PRESSED\n");
+			break;
+		case G500_MACRO_REPEAT_IF_PRESSED:
+			printf ("REPEAT IF PRESSED\n");
+			break;
+		case G500_MACRO_REPEAT:
+			printf ("REPEAT\n");
 			break;
 		case G500_MACRO_END:
 			printf ("END\n");
@@ -57,36 +66,42 @@ int main (int argc, char *argv[]) {
 			printf ("WHEEL %hhd\n", macro_item->value.wheel);
 			break;
 		case G500_MACRO_BUTTON_PRESS:
-			printf ("MOUSE BUTTON PRESS %d\n", g500_get_button_num (le16toh (macro_item->value.button)));
+			printf ("MOUSE BUTTON PRESS %d\n",
+				g500_get_button_num (le16toh (macro_item->value.button)));
 			break;
 		case G500_MACRO_BUTTON_RELEASE:
-			printf ("MOUSE BUTTON RELEASE %d\n", g500_get_button_num (le16toh (macro_item->value.button)));
+			printf ("MOUSE BUTTON RELEASE %d\n",
+				g500_get_button_num (le16toh (macro_item->value.button)));
 			break;
 		case G500_MACRO_CONSUMER_CONTROL:
-			printf ("CONSUMER CONTROL %X\n", be16toh (macro_item->value.cc_usage));
+			printf ("CONSUMER CONTROL %hX\n", be16toh (macro_item->value.cc_usage));
 			break;
 		case G500_MACRO_DELAY:
-			printf ("DELAY %dms\n", be16toh (macro_item->value.delay));
+			printf ("DELAY %hums\n", be16toh (macro_item->value.delay));
 			break;
 		case G500_MACRO_JUMP:
-			printf ("JUMP 0x%02hhX:0x%02hhX\n", macro_item->value.jump.page, macro_item->value.jump.offset);
-			break;
-		case G500_MACRO_REPEAT:
-			printf ("REPEAT 0x%02hhX:0x%02hhX\n",
+			printf ("JUMP 0x%02hhX:0x%02hhX\n",
 				macro_item->value.jump.page,
 				macro_item->value.jump.offset);
 			break;
+		case G500_MACRO_JUMP_IF_PRESSED:
+			printf ("JUMP IF PRESSED 0x%02hhX:0x%02hhX\n",
+				macro_item->value.jump.page,
+				macro_item->value.jump.offset);
+			break;
+		case G500_MACRO_MOUSE_AXES:
+			printf ("MOUSE AXES %hd, %hd\n",
+				be16toh (macro_item->value.mouse.axis[0]),
+				be16toh (macro_item->value.mouse.axis[1]));
+			break;
 		case G500_MACRO_WAIT_HOLD:
-			printf ("WAIT HOLD %dms 0x%02hhX:0x%02hhX\n",
+			printf ("WAIT HOLD %hums 0x%02hhX:0x%02hhX\n",
 				be16toh (macro_item->value.hold.delay),
 				macro_item->value.hold.page,
 				macro_item->value.hold.offset);
 				break;
 		default:
-			//fprintf (stderr, "Unknown type 0x%02hhX\n", macro_item->type);
-			printf ("Unknown type 0x%02hhX\n", macro_item->type);
-			i++;
-			continue;
+			printf ("UNKNOWN 0x%02hhX\n", macro_item->type);
 		}
 		i += g500_macro_item_len (macro_item);
 	}

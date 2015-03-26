@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
+/* use logitech_query with one of these values and the corresponding g500_*_params_t */
 #define G500_QUERY_TYPE_PROFILE	0x0F // ???
 #define G500_QUERY_TYPE_LEDS	0x51
 #define G500_QUERY_TYPE_RESOLUTION	0x63
@@ -13,6 +14,20 @@
 #define G500_QUERY_TYPE_MEMORY	0xA2
 
 #define G500_PAGE_SIZE 	512
+
+/*
+ * Profile
+ */
+
+struct __attribute__ ((__packed__)) g500_profile_params_t {
+	uint8_t unk1; // valid values are 0, 1, 2, 3 or FF
+	uint8_t profile_page;
+	uint8_t unk2; // unused?
+};
+
+int g500_disable_profile (int fd);
+int g500_use_default_profile (int fd);
+int g500_use_profile (int fd, uint8_t profile_page);
 
 /*
  * LEDs
@@ -118,8 +133,23 @@ struct __attribute__ ((__packed__)) g500_data_header_t {
 	uint8_t unk3[2];
 };
 
+/**
+ * Low-level send data with type \p type.
+ *
+ * data may need to contain a header.
+ */
 int g500_send_data (int fd, uint8_t type, uint8_t seq_num, const uint8_t *data);
+/**
+ * Send has much data as it can with only one message.
+ *
+ * Returns the number of bytes sent.
+ */
 int g500_write_some (int fd, const struct g500_data_header_t *header, uint8_t seq_num, const void *data, size_t len);
+/**
+ * Send len bytes in data.
+ *
+ * Reset the sequence number and send several messages.
+ */
 int g500_write_page (int fd, uint8_t page, uint8_t offset, const void *data, size_t len);
 
 /*
@@ -165,13 +195,17 @@ struct __attribute__ ((__packed__)) g500_profile_t {
 #define G500_SPECIAL_BUTTON_DPI_PLUS	0x0004
 #define G500_SPECIAL_BUTTON_DPI_MINUS	0x0008
 
+/* Returns the button number from the bitfield. */
 int g500_get_button_num (uint16_t bits);
 
 /*
  * Macro
  */
 
-#define G500_MACRO_PADDING	0x00
+#define G500_MACRO_NOOP	0x00
+#define G500_MACRO_WAIT_RELEASE	0x01
+#define G500_MACRO_REPEAT_IF_PRESSED 0x02
+#define G500_MACRO_REPEAT	0x03
 #define G500_MACRO_KEY_PRESS	0x20
 #define G500_MACRO_KEY_RELEASE	0x21
 #define G500_MACRO_MODIFIER_PRESS	0x22
@@ -182,7 +216,8 @@ int g500_get_button_num (uint16_t bits);
 #define G500_MACRO_CONSUMER_CONTROL	0x42
 #define G500_MACRO_DELAY	0x43
 #define G500_MACRO_JUMP	0x44
-#define G500_MACRO_REPEAT	0x45
+#define G500_MACRO_JUMP_IF_PRESSED	0x45
+#define G500_MACRO_MOUSE_AXES	0x60
 #define G500_MACRO_WAIT_HOLD	0x61
 #define G500_MACRO_END	0xFF
 
@@ -200,6 +235,9 @@ struct __attribute__ ((__packed__)) g500_macro_item_t {
 			uint8_t offset;
 		} jump;
 		struct __attribute__ ((__packed__)) {
+			uint16_t axis[2];
+		} mouse;
+		struct __attribute__ ((__packed__)) {
 			uint16_t delay;
 			uint8_t page;
 			uint8_t offset;
@@ -207,6 +245,7 @@ struct __attribute__ ((__packed__)) g500_macro_item_t {
 	} value;
 };
 
+/* Get the real size for the macro item */
 size_t g500_macro_item_len (const struct g500_macro_item_t *item);
 
 #endif /* !defined G500_H */

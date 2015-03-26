@@ -224,27 +224,12 @@ int g500_get_button_num (uint16_t bits) {
 }
 
 size_t g500_macro_item_len (const struct g500_macro_item_t *item) {
-	switch (item->type) {
-	case G500_MACRO_PADDING:
-		return 1;
-	case G500_MACRO_KEY_PRESS:
-	case G500_MACRO_KEY_RELEASE:
-	case G500_MACRO_MODIFIER_PRESS:
-	case G500_MACRO_MODIFIER_RELEASE:
-	case G500_MACRO_WHEEL:
+	if ((item->type & 0xF0) == 0x20)
 		return 2;
-	case G500_MACRO_BUTTON_PRESS:
-	case G500_MACRO_BUTTON_RELEASE:
-	case G500_MACRO_CONSUMER_CONTROL:
-	case G500_MACRO_DELAY:
-	case G500_MACRO_JUMP:
-	case G500_MACRO_REPEAT:
+	else if ((item->type & 0xF0) == 0x40)
 		return 3;
-	case G500_MACRO_WAIT_HOLD:
+	else if ((item->type & 0xF0) == 0x60)
 		return 5;
-	case G500_MACRO_END:
+	else
 		return 1;
-	default:
-		return -1;
-	}
 }
