@@ -87,7 +87,7 @@ int g500_set_refresh_rate (int fd, int refresh_rate);
  */
 
 #define G500_MEM_OP_FILL	0x02
-#define G500_MEM_OP_OR	0x03
+#define G500_MEM_OP_AND	0x03
 
 struct __attribute__ ((__packed__)) g500_mem_op_params_t {
 	uint8_t op;
