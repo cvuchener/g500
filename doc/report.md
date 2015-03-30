@@ -58,14 +58,14 @@ Each half-byte from lowest to highest corresponds to:
  - High
  - Mid
  - Low
- - "Running man" icon
+ - “Running man” icon
 
 Example reading LED state:
 ```
 out  10 00 81 51 00 00 00
 in   10 00 81 51 22 12 00
 ```
-The two lowest LEDs and the "running man" are on. The highest LED is off.
+The two lowest LEDs and the “running man” are on. The highest LED is off.
 
 
 #### Resolution (0x63)
@@ -120,11 +120,11 @@ These long report performs operations on the internal memory. Following bytes in
  - Byte 12-15: unknown
 
 The known operation are:
- - 2: Fill the *destination page* with 0xFF (does not use *offset* or *length*). This this useful before AND'ing data.
+ - 2: Fill the *destination page* with 0xFF (does not use *offset* or *length*). This this useful before AND’ing data. This has no effect on page 0 (temporary memory).
  - 3: Copy or AND *length* bytes of data in page 0 to the *destination page* at *destination offset*
- - 4: Copy or AND *source length* bytes from *source offset* from an unknown static source of data at *destination offset* in *destination offset*. I have seen the report in Vladyslav Shtabovenko's g500-control.c, SetPoint then read what was written but I don't know why.
+ - 4: Copy or AND *source length* bytes from *source offset* from an unknown static source of data at *destination offset* in *destination offset*. I have seen the report in Vladyslav Shtabovenko’s g500-control.c, SetPoint then read what was written but I don’t know why.
 
-Writing data works differently based on the page. In page 0, data replace the previous values. In other pages, the data is AND'ed, so you need to fill the page with 0xFF before writing in order to replace.
+Writing data works differently based on the page. In page 0, data replace the previous values. In other pages, the data is AND’ed, so you need to fill the page with 0xFF before writing in order to replace.
 
 
 #### Sequence number (0xA1)
@@ -136,7 +136,7 @@ The only known report with this value is: `10 00 80 A1 01 00 00`. It is used for
 
 This message is used to retrieve data (exactly 16 bytes) from the internal memory. The query parameters are the page and offset of the data you want to read. The answer last 16 bytes are the data.
 
-Here is an example of LGS reading the data just after the profile (offset 0x27 means from 0x4E^th byte) in page 2. The data is a string (4C 47 53 30 32 = "LGS02") that LGS stores there for itself.
+Here is an example of LGS reading the data just after the profile (offset 0x27 means from byte 0x4E) in page 2. The data is a string (`4C 47 53 30 32` = "LGS02") that LGS stores there for itself.
 ```
 out  10 00 83 A2 02 27 00
 in   11 00 83 A2 4C 47 53 30 32 00 00 00 00 00 00 00 00 00 00 00
@@ -146,18 +146,51 @@ in   11 00 83 A2 4C 47 53 30 32 00 00 00 00 00 00 00 00 00 00 00
 Sending data to the internal memory
 --------------------------
 
+Data is sent in blocks to the internal memory. Values are replaced in the temporary memory (page 0) but is AND’ed in the permanent memory.
 
+Each block is transmitted in several messages, the first message contains a header describing the block being sent. The header is 9 byte long.
+
+The structure of each message is:
+ - long report ID (0x11)
+ - zero
+ - message type
+ - a sequence number
+ - 16 bytes of data. The 9 first are the header in the first message, so there is actually only 7 bytes of payload in the first message.
 
 ### Message types
 
+There are four message types. Depending if it is the first message (with a header) or if an acknowledgement message is required.
+
+|                         | Begin sending | Continue sending |
+| ----------------------- | ------------- | ---------------- |
+| Without acknowledgement | 0x90          | 0x91             |
+| With acknowledgement    | 0x92          | 0x93             |
 
 ### Sequence number & Acknowledgement messages
 
+Each message contains a sequence number that must be incremented each time. The next sequence number to send can be reset with a special query (0xA1).
+
+When using the message types requiring an acknowledgement, the sequence number is repeated in the acknowledgement message.
+
+The structure of the acknowledgement messages is:
+ - short report ID (0x10)
+ - zero
+ - the message type is 0x50
+ - acknowledgement status
+   * 0x01 if there was no error
+   * another value otherwise
+ - the sequence number if there was no error
+ - two null bytes
 
 ### Header
 
-
-
+The structure of the header sent in the first message is:
+ - 0x01, the purpose of this byte is unknown
+ - the destination page number (1 byte)
+ - the destination offset (1 byte)
+ - two unknown bytes
+ - the length of the block as a 16 bits big endian integer.
+ - two unknown bytes
 
 
 Error messages
