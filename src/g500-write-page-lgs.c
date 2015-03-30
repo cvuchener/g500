@@ -65,7 +65,7 @@ int main (int argc, char *argv[]) {
 	}
 	/* copy first block from temp memory to dest page */
 	memset (&params, 0, sizeof (struct g500_mem_op_params_t));
-	params.op = G500_MEM_OP_OR;
+	params.op = G500_MEM_OP_AND;
 	params.page = page;
 	params.offset = 0;
 	params.len = 256;
@@ -79,7 +79,7 @@ int main (int argc, char *argv[]) {
 	}
 	/* copy second block from temp memory to end of dest page */
 	memset (&params, 0, sizeof (struct g500_mem_op_params_t));
-	params.op = G500_MEM_OP_OR;
+	params.op = G500_MEM_OP_AND;
 	params.page = page;
 	params.offset = 0x80;
 	params.len = 256;
