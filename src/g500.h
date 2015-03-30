@@ -116,7 +116,7 @@ struct __attribute__ ((__packed__)) g500_mem_op_params_t {
 	uint8_t page;
 	uint8_t offset;
 	uint8_t unk3[2];
-	uint16_t len; // big enddian
+	uint16_t len; // big endian
 	uint8_t unk4[4];
 };
 
