@@ -51,17 +51,14 @@ int main (int argc, char *argv[]) {
 
 	struct g500_mem_op_params_t params;
 	memset (&params, 0, sizeof (struct g500_mem_op_params_t));
-	params.op = 2;
+	params.op = G500_MEM_OP_FILL;
 	params.page = page;
 	if (-1 == logitech_query (fd, LOGITECH_SEND_LONG, G500_QUERY_TYPE_MEMORY_OP, (uint8_t *)&params, NULL)) {
 		fprintf (stderr, "Error during operation\n");
 		return EXIT_FAILURE;
 	}
 
-	if (-1 == g500_write_page (fd, page, 0, buffer, 256)) {
-		return EXIT_FAILURE;
-	}
-	if (-1 == g500_write_page (fd, page, 0x80, buffer+256, 256)) {
+	if (-1 == g500_write_page (fd, page, 0, buffer, 512)) {
 		return EXIT_FAILURE;
 	}
 
