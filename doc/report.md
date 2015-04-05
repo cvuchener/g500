@@ -166,6 +166,7 @@ There are four message types. Depending if it is the first message (with a heade
 | Without acknowledgement | 0x90          | 0x91             |
 | With acknowledgement    | 0x92          | 0x93             |
 
+
 ### Sequence number & Acknowledgement messages
 
 Each message contains a sequence number that must be incremented each time. The next sequence number to send can be reset with a special query (0xA1).
@@ -182,6 +183,7 @@ The structure of the acknowledgement messages is:
  - the sequence number if there was no error
  - two null bytes
 
+
 ### Header
 
 The structure of the header sent in the first message is:
@@ -196,3 +198,24 @@ The structure of the header sent in the first message is:
 Error messages
 --------------
 
+The mouse will sometimes answer with error messages. The error message use a short report with message type 0x8F. The next bytes contains the message type and query type from the message that generated the error and an error code (8 bits or 16 bts little-endian?).
+
+### Examples
+
+Sending an invalid resolution setting, the error message repeat the message type (`80 63`) and gives error code 1.
+```
+out  10 00 80 63 00 00 00
+in   10 00 8F 80 63 01 00
+```
+
+Sending an invalid request with 0xA1 gives another error code 11.
+```
+out  10 00 80 A1 00 00 00
+in   10 00 8F 80 A1 0B 00
+```
+
+Trying to clear page 0 gives error code 2.
+```
+out  11 00 82 A2 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+in   10 00 8F 82 A2 02 00
+```
