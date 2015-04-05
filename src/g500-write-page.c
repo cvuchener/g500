@@ -40,6 +40,7 @@ int main (int argc, char *argv[]) {
 		page = strtol (argv[2], NULL, 0);
 
 	uint8_t buffer[512];
+	memset (buffer, -1, sizeof (buffer));
 	int len = 0, ret;
 	while (0 != (ret = read (0, &buffer[len], sizeof (buffer) - len))) {
 		if (ret == -1) {
