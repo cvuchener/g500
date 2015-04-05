@@ -187,7 +187,8 @@ struct __attribute__ ((__packed__)) g500_profile_t {
 		uint16_t resolution[2]; // big endian
 		uint16_t leds; // little endian
 	} dpi_mode[5];
-	uint16_t angle;
+	uint8_t angle;
+	uint8_t default_mode;
 	uint8_t unk2[2];
 	uint8_t refresh_rate;
 	struct __attribute__ ((__packed__)) {

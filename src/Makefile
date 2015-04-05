@@ -2,7 +2,16 @@ CC=gcc
 CFLAGS=-Wall -g -O0 -DDEBUG
 LDFLAGS=
 
-EXE_SRC=g500-dump-page.c g500-write-block.c g500-fill-page.c g500-write-page.c g500-write-page-lgs.c g500-mem-op.c g500-parse-profile.c g500-parse-macro.c
+EXE_SRC=g500-dump-page.c \
+	g500-write-block.c \
+	g500-fill-page.c \
+	g500-write-page.c \
+	g500-write-page-lgs.c \
+	g500-mem-op.c \
+	g500-set-profile.c \
+	g500-parse-profile.c \
+	g500-parse-macro.c \
+	g500-edit-profile.c
 LIB_SRC=logitech.c g500.c
 
 SRC=$(EXE_SRC) $(LIB_SRC)
