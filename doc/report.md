@@ -108,16 +108,19 @@ The USB refresh rate is encoded in a single byte. The value is the divisor of 10
 #### Memory operation (0xA0)
 
 These long report performs operations on the internal memory. Following bytes in the report are:
- - Byte 0: operation
- - Byte 1: unknown
- - Byte 2: source offset (for operation 4)
- - Byte 3: source length (for operation 4)
- - Byte 4-5: unknown
- - Byte 6: destination page
- - Byte 7: destination offset
- - Byte 8-9: unknown
- - Byte 10-11: length (for operation 3)
- - Byte 12-15: unknown
+
+| Bytes | Type       | Content            | Comment                  |
+| ----- | ---------- | ------------------ | ------------------------ |
+| 0     | byte       | operation          |                          |
+| 1     |            | ?                  |                          |
+| 2     | byte       | source offset      | for operation 4          |
+| 3     | byte       | source length      | for operation 4          |
+| 4–5   |            | ?                  |                          |
+| 6     | byte       | destination page   |                          |
+| 7     | byte       | destination offset | unused for operation 2   |
+| 8–9   |            | ?                  |                          |
+| 10–11 | int16  be  | length             | for operation 3          |
+| 12–15 |            | ?                  |                          |
 
 The known operation are:
  - 2: Fill the *destination page* with 0xFF (does not use *offset* or *length*). This this useful before AND’ing data. This has no effect on page 0 (temporary memory).
@@ -151,11 +154,14 @@ Data is sent in blocks to the internal memory. Values are replaced in the tempor
 Each block is transmitted in several messages, the first message contains a header describing the block being sent. The header is 9 byte long.
 
 The structure of each message is:
- - long report ID (0x11)
- - zero
- - message type
- - a sequence number
- - 16 bytes of data. The 9 first are the header in the first message, so there is actually only 7 bytes of payload in the first message.
+
+| Bytes | Type       | Content            | Comment                  |
+| ----- | ---------- | ------------------ | ------------------------ |
+| 0     | byte       | long report ID     | 0x11                     |
+| 1     | byte       | zero               | 0x00                     |
+| 2     | byte       | message type       | 0x90–0x93                |
+| 3     | byte       | a sequence number  |                          |
+| 4–19  | byte array | 16 bytes of data   | The 9 first are the header in the first message, so there is actually only 7 bytes of payload in the first message. |
 
 ### Message types
 
@@ -174,25 +180,27 @@ Each message contains a sequence number that must be incremented each time. The 
 When using the message types requiring an acknowledgement, the sequence number is repeated in the acknowledgement message.
 
 The structure of the acknowledgement messages is:
- - short report ID (0x10)
- - zero
- - the message type is 0x50
- - acknowledgement status
-   * 0x01 if there was no error
-   * another value otherwise
- - the sequence number if there was no error
- - two null bytes
+| Bytes | Type       | Content                | Comment                  |
+| ----- | ---------- | ---------------------- | ------------------------ |
+| 0     | byte       | short report ID        | 0x10                     |
+| 1     | byte       | zero                   | 0x00                     |
+| 2     | byte       | message type           | 0x50                     |
+| 3     | byte       | acknowledgement status | 0x01 if there is no error, otherwise an error code |
+| 4     | byte       | the sequence number    | if there was no error
+| 5–6   |            | two null bytes         |                          |
 
 
 ### Header
 
 The structure of the header sent in the first message is:
- - 0x01, the purpose of this byte is unknown
- - the destination page number (1 byte)
- - the destination offset (1 byte)
- - two unknown bytes
- - the length of the block as a 16 bits big endian integer.
- - two unknown bytes
+| Bytes | Type       | Content            | Comment                  |
+| ----- | ---------- | ------------------ | ------------------------ |
+| 0     | byte       | ?                  | 0x01                     |
+| 1     | byte       | destination page   |                          |
+| 2     | byte       | destination offset |                          |
+| 3–4   | byte       | ?                  |                          |
+| 5–6   | int16 be   | block length       |                          |
+| 7–8   | byte       | ?                  |                          |
 
 
 Error messages
