@@ -180,6 +180,7 @@ Each message contains a sequence number that must be incremented each time. The 
 When using the message types requiring an acknowledgement, the sequence number is repeated in the acknowledgement message.
 
 The structure of the acknowledgement messages is:
+
 | Bytes | Type       | Content                | Comment                  |
 | ----- | ---------- | ---------------------- | ------------------------ |
 | 0     | byte       | short report ID        | 0x10                     |
@@ -193,6 +194,7 @@ The structure of the acknowledgement messages is:
 ### Header
 
 The structure of the header sent in the first message is:
+
 | Bytes | Type       | Content            | Comment                  |
 | ----- | ---------- | ------------------ | ------------------------ |
 | 0     | byte       | ?                  | 0x01                     |
