@@ -26,6 +26,33 @@
 #include <stdio.h>
 #endif
 
+int g500_disable_profile (int fd) {
+	struct g500_profile_params_t params;
+	memset (&params, 0, sizeof (params));
+	params.unk1 = 0xFF;
+	if (-1 == logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_PROFILE, (uint8_t *)&params, NULL))
+		return -1;
+	return 0;
+}
+
+int g500_use_default_profile (int fd) {
+	struct g500_profile_params_t params;
+	memset (&params, 0, sizeof (params));
+	if (-1 == logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_PROFILE, (uint8_t *)&params, NULL))
+		return -1;
+	return 0;
+}
+
+int g500_use_profile (int fd, uint8_t profile_page) {
+	struct g500_profile_params_t params;
+	memset (&params, 0, sizeof (params));
+	params.unk1 = 0x01;
+	params.profile_page = profile_page;
+	if (-1 == logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_PROFILE, (uint8_t *)&params, NULL))
+		return -1;
+	return 0;
+}
+
 int g500_get_leds (int fd) {
 	struct g500_leds_params_t params;
 	if (-1 == logitech_query (fd, LOGITECH_READ_SHORT, G500_QUERY_TYPE_LEDS, NULL, (uint8_t *)&params))
