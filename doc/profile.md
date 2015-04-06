@@ -1,6 +1,10 @@
 Profile
 =======
 
+A profile must be written at the beginning of a memory page. It fits in page 0, so it can be used for temporary profiles. The remaining space in the page can be used for other purposes: sotring macros or driver metadata (LGS stores macro names just after the profile).
+
+When plugging the mouse, the profile from page 2 is loaded.
+
 Structure
 ---------
 
@@ -25,9 +29,15 @@ Foreach DPI mode, the structure is:
 | ----- | ---------- | ------------------ | ------------------------ |
 | 0–1   | int16 be   | X resolution       | dpi × 17 ÷ 400           |
 | 2–3   | int16 be   | Y resolution       | dpi × 17 ÷ 400           |
-| 4–5   | int16 le   | leds status        | 1: off, 2: on            |
+| 4–5   | int16 le   | leds status        | each half-byte is a led: 1: off, 2: on  |
 
 All bytes are null when the mode is disabled.
+
+For the leds status, each half-byte from lowest to highest corresponds to:
+ - High
+ - Mid
+ - Low
+ - “Running man” icon
 
 ### Button binding
 
@@ -75,7 +85,7 @@ The first byte indicate the binding type, the next two bytes depends on the type
 	| 0     | byte       | binding type       | 0x8F                     |
 	| 1–2   |            |                    | zeros                    |
 
- - Macro has no type value but use the page number of the start of the macro instead. The next byte give the offset. The last one is unused.
+ - Macro has no type value but use the page number of the start of the macro instead.
 
 	| Bytes | Type       | Content            | Comment                  |
 	| ----- | ---------- | ------------------ | ------------------------ |
