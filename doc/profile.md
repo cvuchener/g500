@@ -1,7 +1,7 @@
 Profile
 =======
 
-A profile must be written at the beginning of a memory page. It fits in page 0, so it can be used for temporary profiles. The remaining space in the page can be used for other purposes: sotring macros or driver metadata (LGS stores macro names just after the profile).
+A profile must be written at the beginning of a memory page. It fits in page 0, so it can be used for temporary profiles. The remaining space in the page can be used for other purposes: string macros or driver metadata (LGS stores macro names just after the profile).
 
 When plugging the mouse, the profile from page 2 is loaded.
 
@@ -23,17 +23,17 @@ The profile is 78 bytes long.
 
 ### DPI mode
 
-Foreach DPI mode, the structure is:
+For each DPI mode, the structure is:
 
 | Bytes | Type       | Content            | Comment                  |
 | ----- | ---------- | ------------------ | ------------------------ |
 | 0–1   | int16 be   | X resolution       | dpi × 17 ÷ 400           |
 | 2–3   | int16 be   | Y resolution       | dpi × 17 ÷ 400           |
-| 4–5   | int16 le   | leds status        | each half-byte is a led: 1: off, 2: on  |
+| 4–5   | int16 le   | LEDs status        | each half-byte is a LED: 1: off, 2: on  |
 
 All bytes are null when the mode is disabled.
 
-For the leds status, each half-byte from lowest to highest corresponds to:
+For the LEDs status, each half-byte from lowest to highest corresponds to:
  - High
  - Mid
  - Low
