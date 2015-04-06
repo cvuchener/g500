@@ -24,6 +24,8 @@
 
 #include "g500.h"
 
+const char *onoff_to_string (int value);
+
 int main (int argc, char *argv[]) {
 	int i, j;
 	uint8_t buffer[G500_PAGE_SIZE];
@@ -48,21 +50,13 @@ int main (int argc, char *argv[]) {
 			g500_unpack_resolution (be16toh (profile->dpi_mode[i].resolution[1])));
 		for (j = 0; j < 4; ++j) {
 			int led = (le16toh (profile->dpi_mode[i].leds) & (0x0F << 4*j)) >> 4*j;
-			switch (led) {
-			case 1:
-				printf (" off");
-				break;
-			case 2:
-				printf (" on");
-				break;
-			default:
-				printf (" error (%d)", led);
-			}
+			printf (" %s", onoff_to_string (led));
 		}
 		printf ("\n");
 	}
 
-	printf ("angle correction: 0x%04X\n", profile->angle);
+	printf ("angle correction: %s\n", onoff_to_string (profile->angle));
+	printf ("default dpi mode: %d\n", profile->default_mode);
 	printf ("refresh rate: %dHz\n", g500_unpack_refresh_rate (profile->refresh_rate));
 
 	printf ("bindings:\n");
@@ -108,6 +102,9 @@ int main (int argc, char *argv[]) {
 		case G500_BINDING_CONSUMER_CONTROL:
 			printf ("consumer control 0x%X", be16toh (profile->binding[i].value.cc_usage));
 			break;
+		case G500_BINDING_UNSET:
+			printf ("unset");
+			break;
 		default:
 			printf ("unknown (0x%02hhX) %02hhX %02hhX",
 				profile->binding[i].type,
@@ -119,3 +116,15 @@ int main (int argc, char *argv[]) {
 	return EXIT_SUCCESS;
 }
 
+const char *onoff_to_string (int value) {
+	static char error_str[32];
+	switch (value) {
+	case 1:
+		return "off";
+	case 2:
+		return "on";
+	default:
+		snprintf (error_str, sizeof (error_str), "invalid (%d)", value);
+		return error_str;
+	}
+}
