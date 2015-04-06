@@ -224,8 +224,3 @@ out  10 00 80 A1 00 00 00
 in   10 00 8F 80 A1 0B 00
 ```
 
-Trying to clear page 0 gives error code 2.
-```
-out  11 00 82 A2 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-in   10 00 8F 82 A2 02 00
-```
