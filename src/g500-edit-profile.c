@@ -39,7 +39,7 @@ int main (int argc, char *argv[]) {
 	int i, j;
 	uint8_t buffer[G500_PAGE_SIZE];
 
-	if (argc > 2 && strcmp (argv[1], "-h") == 0) {
+	if (argc < 2 || (argc >= 2 && strcmp (argv[1], "-h") == 0)) {
 		fprintf (stderr,
 			"Usage: %s [command params...] [...]\n"
 			"Commands are:\n"
