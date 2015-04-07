@@ -31,6 +31,8 @@ I made these tools mainly to help me hacking and testing my ideas, but they can 
 
  - `g500-dump-page /dev/hidrawN pagenumber`
    Read the page *pagenumber* from the mouse memory and write it to *stdout*.
+ - `g500-read-block /dev/hidrawN pagenumber offset length`
+   A more general purpose version of g500-dump-page. Only read *length* bytes of data from page *pagenumber* at offset *offset* (the offset is counting 16 bits words not bytes).
  - `g500-edit-profile command...` 
    Read a profile from *stdin* and write the modified profile to *stdout*. See the usage for details on the (too) many editing commands.
  - `g500-fill-page /dev/hidrawN pagenumber`

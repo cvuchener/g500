@@ -3,6 +3,7 @@ CFLAGS=-Wall -g -O0 -DDEBUG
 LDFLAGS=
 
 EXE_SRC=g500-dump-page.c \
+	g500-read-block.c \
 	g500-write-block.c \
 	g500-fill-page.c \
 	g500-write-page.c \
