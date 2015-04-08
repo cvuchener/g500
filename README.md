@@ -39,8 +39,8 @@ I made these tools mainly to help me hacking and testing my ideas, but they can 
    Fill the page *pagenumber* with `FF` bytes.
  - `g500-mem-op [options] /dev/hidrawN`
    A general purpose command for testing the memory operations commands.
- - `g500-parse-macro`
-   Parse the macro from *stdin* (at most 512 bytes).
+ - `g500-parse-macro`[offset]
+   Parse the macro from *stdin* (at most 512 bytes). A whole page can be passed while specifying the offset.
  - `g500-parse-profile`
    Parse the profile from *stdin*.
  - `g500-set-profile /dev/hidrawN default|disable|pagenumber`
