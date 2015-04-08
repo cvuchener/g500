@@ -212,7 +212,7 @@ ff               End of macro
 ff                  End of macro
 ```
 
- - 12:95 Press “D” in an infinite loop (or could not find how to stop it other than unplugging the mouse)
+ - 12:95 Press “D” in an infinite loop (or I could not find how to stop it other than unplugging the mouse)
 
 ```
 20 07   Press “D”
