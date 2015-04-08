@@ -58,6 +58,13 @@ A combination of these commands can be used in shell script to change the profil
 ./g500-set-profile /dev/hidraw1 0
 ```
 
+Compiling
+---------
+
+There is a simple Makefile in the src directory. Compilation options can be changed in the first lines.
+
+There is no dependencies other than the standard C library and POSIX system calls.
+
 Licenses
 --------
 
