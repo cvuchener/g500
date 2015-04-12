@@ -17,7 +17,7 @@ When writing to this memory, new values replace the old ones.
 
 ### Unknown read-only data (112 last bytes of page 0)
 
-The end of page 0 is not writable and already contains data when plugging the mouse.
+The end of page 0 is not writable and already contains data when plugging the mouse. Some of this data is variable.
 
 
 ### Persistent memory (pages 1–16)
