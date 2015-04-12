@@ -146,6 +146,35 @@ in   11 00 83 A2 4C 47 53 30 32 00 00 00 00 00 00 00 00 00 00 00
 ```
 
 
+#### Optical sensor settings (0x61)
+
+These settings are not really understood but they seem to be related to the optical sensor. Values can be read or written.
+
+The parameters are:
+| Bytes | Type       | Content            | Comment                  |
+| ----- | ---------- | ------------------ | ------------------------ |
+| 0     | byte       | Volatile sensor-related value | Read-only. Maybe the reflectiveness of the material under the sensor |
+| 1     | byte       | Movement filter?   | Same as byte 36 in the profile |
+| 2     | byte       | ?                  | Same as byte 37 in the profile |
+
+Byte 0 is near zero when in the air, around 0x30 on cloth, around 0x70 on shiny plastic or glass.
+
+
+#### Other unknown types
+
+| Value | Read/Write | Length | Comment |
+| ----- | ---------- | ------ | ------- |
+| 0x01  | R/W        | short  |         |
+| 0x57  | R/W        | short  | All 3 parameter bytes can be read back |
+| 0x78  | R          | short  |         |
+| 0xD0  | R/W        | short  |         |
+| 0xDA  | R/W        | short  | Gives error code 0x0A |
+| 0xDB  | R          | long   | Gives error code 0x0A |
+| 0xDE  | R/W        | short  | Gives error code 0x0A |
+| 0xF0  | W          | short  |         |
+| 0xF1  | R          | short  | First byte in the parameters must be 1 or 2 |
+
+
 Sending data to the internal memory
 --------------------------
 
@@ -224,3 +253,11 @@ out  10 00 80 A1 00 00 00
 in   10 00 8F 80 A1 0B 00
 ```
 
+### Error code
+
+| Value | Possible meaning           |
+| ----- | -------------------------- |
+| 0x01  | Invalid report type or message length |
+| 0x02  | Invalid query type         |
+| 0x0A  | ? (while short read/write 0xDA/0xDE or long write 0xDB) |
+| 0x0B  | Invalid parameters         |
