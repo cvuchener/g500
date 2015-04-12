@@ -169,6 +169,7 @@ Byte 0 is near zero when in the air, around 0x30 on cloth, around 0x70 on shiny 
 | 0x57  | R/W        | short  | All 3 parameter bytes can be read back |
 | 0x78  | R          | short  |         |
 | 0xD0  | R/W        | short  |         |
+| 0xD2  | R          | short  |         |
 | 0xDA  | R/W        | short  | Gives error code 0x0A |
 | 0xDB  | R          | long   | Gives error code 0x0A |
 | 0xDE  | R/W        | short  | Gives error code 0x0A |
