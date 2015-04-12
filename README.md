@@ -1,11 +1,21 @@
-g500
+G500
 ====
 
-This repository contains the documentation and code for g500 specific HID protocol for profile configuration. The code is not meant to be a configuration software but an example of how to interact with the mouse.
+This repository contains the documentation and code for the Logitech G500 specific HID protocol for profile configuration. The code is not meant to be an user-firendly configuration software but an example of how to interact with the mouse.
 
 What I know of the configuration protocol was guessed from usb trace from Logitech Gaming Software (LGS) on Windows (thanks to USBPcap) and previous work from [Andreas Schneider](http://blog.cryptomilk.org/2011/02/22/logitech-linux-mouse-support/) and [Vladyslav Shtabovenko](https://github.com/vsht/g500-control/).
 
 I cannot give you any guarantee that the code or the documentation in this repository is correct and will not break your mouse. But I think that the worst that could happen is having corrupted profiles or macros in memory, and if you do not know how to fix that, LGS does: just plug it into a Windows computer and launch LGS. Any other bad state that I have seen is not persistent and is reset when unplugging the mouse. Still it is a good idea to start your hacking by dumping the whole memory into backup files.
+
+I consider the documentation an important part of this project. Any contribution to it is welcome, be it about adding content and explanations or fixing my bad english.
+
+
+Compiling
+---------
+
+There is a simple Makefile in the src directory. Compilation options can be changed in the first lines.
+
+There is no dependencies other than the standard C library and POSIX system calls (open, read and write).
 
 
 hidraw
@@ -13,7 +23,7 @@ hidraw
 
 These tools use Linux’s hidraw interface to communicate with the mouse. The G500 creates two hidraw devices, you must use the second one to configure the mouse.
 
-You need read and write access to the hidraw device, so either run the commands as root or the change the permission of the device. Here is a sample udev rule file that I use to add read/write permissions to users in a *mouseconfig* group:
+You need read and write access to the hidraw device, so either run the commands as root or change the permission of the device. Here is a sample udev rule file that I use to add read/write permissions to users in a *mouseconfig* group:
 ```
 ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c068", GOTO="logitech_mouse"
 GOTO="logitech_end"
@@ -23,6 +33,7 @@ KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{bInterfaceNumber}=="01", GROUP="mo
 
 LABEL="logitech_end"
 ```
+
 
 Tools
 -----
@@ -58,12 +69,6 @@ A combination of these commands can be used in shell script to change the profil
 ./g500-set-profile /dev/hidraw1 0
 ```
 
-Compiling
----------
-
-There is a simple Makefile in the src directory. Compilation options can be changed in the first lines.
-
-There is no dependencies other than the standard C library and POSIX system calls.
 
 Licenses
 --------
