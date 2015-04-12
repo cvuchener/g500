@@ -151,6 +151,7 @@ in   11 00 83 A2 4C 47 53 30 32 00 00 00 00 00 00 00 00 00 00 00
 These settings are not really understood but they seem to be related to the optical sensor. Values can be read or written.
 
 The parameters are:
+
 | Bytes | Type       | Content            | Comment                  |
 | ----- | ---------- | ------------------ | ------------------------ |
 | 0     | byte       | Volatile sensor-related value | Read-only. Maybe the reflectiveness of the material under the sensor |
