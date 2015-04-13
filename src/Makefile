@@ -1,5 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -g -O0 -DDEBUG
+#CFLAGS=-Wall -g -O0 -DDEBUG -DDEBUG_PRINT_REPORT
 LDFLAGS=
 
 EXE_SRC=g500-dump-page.c \
@@ -12,7 +13,8 @@ EXE_SRC=g500-dump-page.c \
 	g500-set-profile.c \
 	g500-parse-profile.c \
 	g500-parse-macro.c \
-	g500-edit-profile.c
+	g500-edit-profile.c \
+	check-hidraw-logitech-reports.c
 LIB_SRC=logitech.c g500.c
 
 SRC=$(EXE_SRC) $(LIB_SRC)
