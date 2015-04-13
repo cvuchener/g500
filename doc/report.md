@@ -7,7 +7,14 @@ The short report has id 0x10 and contains 6 bytes. The long report has id 0x11 a
 
 To communicate with the device you must send an output report to the device and the device will usually answer with an input report. The input report may have a different report id than the output one.
 
-The first byte in the report is always zero. The second byte indicates the type of the message. The rest depends on the message type.
+The first byte in the report is the device index on unifying receiver, it is always zero on wired mice. The second byte indicates the type of the message. The rest depends on the message type.
+
+| Bytes | Type       | Content            | Comment                  |
+| ----- | ---------- | ------------------ | ------------------------ |
+| 0     | byte       | HID report ID      | 0x10 for short report, 0x11 for long report |
+| 1     | byte       | Device index       | Used by Unifying receivers, 0 for wired devices |
+| 2     | byte       | Message type       |                          |
+| 3–…   |            | Parameters         | Depends on the message type |
 
 Querying the device
 -------------------
@@ -261,5 +268,5 @@ in   10 00 8F 80 A1 0B 00
 | ----- | -------------------------- |
 | 0x01  | Invalid report type or message length |
 | 0x02  | Invalid query type         |
-| 0x0A  | ? (while short read/write 0xDA/0xDE or long write 0xDB) |
+| 0x0A  | Request unavailable (according to hid-logitech-hidpp linux driver) |
 | 0x0B  | Invalid parameters         |
