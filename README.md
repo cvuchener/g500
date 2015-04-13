@@ -37,6 +37,19 @@ KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{bInterfaceNumber}=="01", GROUP="mo
 LABEL="logitech_end"
 ```
 
+You can use the check-hidraw-logitech-reports utility in src directory to check if a specific hidraw device supports the Logitech vendor-specific reports.
+
+```
+$ sudo ./check-hidraw-logitech-reports /dev/hidraw0 && echo OK || echo wrong device
+046d:c24e Logitech G500s Laser Gaming Mouse
+Missing logitech HID report
+wrong device
+$ sudo ./check-hidraw-logitech-reports /dev/hidraw1 && echo OK || echo wrong device
+046d:c24e Logitech G500s Laser Gaming Mouse
+This device supports Logitech HID reports.
+OK
+```
+
 
 Tools
 -----
