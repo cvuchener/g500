@@ -25,7 +25,10 @@ These tools use Linux’s hidraw interface to communicate with the mouse. The G5
 
 You need read and write access to the hidraw device, so either run the commands as root or change the permission of the device. Here is a sample udev rule file that I use to add read/write permissions to users in a *mouseconfig* group:
 ```
+# G500
 ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c068", GOTO="logitech_mouse"
+# G500s
+ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c24e", GOTO="logitech_mouse"
 GOTO="logitech_end"
 
 LABEL="logitech_mouse"
