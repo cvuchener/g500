@@ -86,6 +86,22 @@ A combination of these commands can be used in shell script to change the profil
 ```
 
 
+Safe testing
+------------
+
+Reading command are safe and should not modify anything on the mouse even on other Logitech mice where they may fail.
+
+### Reading the memory
+
+You can dump the whole memory with this command `i=0; while ./g500-dump-page /dev/hidraw1 $i > page$i; do i=$((i+1)); done; echo Read $i pages`. It reads the memory until it gets an error, so the error message is expected. The number of page read will tell if it really failed.
+
+Then you can test if page contains a valid g500 profile (or something similar) with g500-parse-profile. For testing the profile on page 2 (the page containing the persistent profile on the G500), run: `./g500-parse-profile < page2`.
+
+You can parse a macro with g500-parse-macro. For example, if the parsing of the profile gives a macro with address `0x07:0x0C`, you can parse it with `./g500-parse-macro 0x0C < page7`.
+
+Send a bug report with the memory dumps if you cannot parse them.
+
+
 Licenses
 --------
 
