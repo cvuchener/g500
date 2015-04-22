@@ -78,6 +78,8 @@ I made these tools mainly to help me hacking and testing my ideas, but they can 
    Overwrite the whole page with data from *stdin*.
  - `g500-write-page-lgs /dev/hidrawN pagenumber`
    Same as g500-write-page but using the same method as LGS.
+ - `send-raw-request /dev/hidrawN` 
+   A very basic tool reading the request on stdin and writing the reply on stdout. The program will block if there is no reply, do not hesitate to interrupt it if it takes too long.
 
 A combination of these commands can be used in shell script to change the profile. For example, to temporarily change the middle side button to work as wheel click:
 ```
@@ -100,6 +102,21 @@ Then you can test if page contains a valid g500 profile (or something similar) w
 You can parse a macro with g500-parse-macro. For example, if the parsing of the profile gives a macro with address `0x07:0x0C`, you can parse it with `./g500-parse-macro 0x0C < page7`.
 
 Send a bug report with the memory dumps if you cannot parse them.
+
+### Testing some reading request
+
+You can test reading the LEDs state, current resolution or USB refresh rate and check if the reply match the documentation.
+
+For the G500, the commands are:
+ - LEDs state: `xxd -r -p <<< "10 00 81 51 00 00 00" | ./send-raw-request /dev/hidraw1 | xxd -g 1`
+ - Current resolution: `xxd -r -p <<< "10 00 83 63 00 00 00" | ./send-raw-request /dev/hidraw1 | xxd -g 1`
+ - USB refresh rate: `xxd -r -p <<< "10 00 81 64 00 00 00" | ./send-raw-request /dev/hidraw1 | xxd -g 1`
+
+On other devices, theses command may reply with different format or with an error message. An error message looks like `10 00 8f XX YY ZZ 00` where XX is the message type (81 or 83), YY the what you where querying (51, 63 or 64 in these examples) and ZZ the error code. If you get error 2, try changing between `81` and `83` message types.
+
+### Scanning values that can be read
+
+`for i in {0..255}; do echo 10 00 81 $(printf %02x $i) 00 00 00 | xxd -r -p | ./send-raw-request /dev/hidraw1 | xxd -g 1; done | grep -v "10 00 8f 81 .. 02 00"` will print all the reply that were not “invalid” error message. Replace `81` with `83` for testing long reads.
 
 
 Licenses
