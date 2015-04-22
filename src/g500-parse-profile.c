@@ -63,7 +63,7 @@ int main (int argc, char *argv[]) {
 	for (i = 0; i < 13; ++i) {
 		printf (" - button %d -> ", i);
 		if (profile->binding[i].type <= G500_BINDING_MACRO_MAX) {
-			printf ("macro (0x%02hhX:0x%02hhX)\n",
+			printf ("macro (0x%02hhX:0x%02hhX)",
 				profile->binding[i].type,
 				profile->binding[i].value.macro.offset);
 		}
