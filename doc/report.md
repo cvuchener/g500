@@ -148,12 +148,15 @@ According g_hack.c, the G9 has resolution settings up to 0x87.
 #### USB refresh rate (0x64)
 
 The USB refresh rate is encoded in a single byte. The value is the divisor of 1000 Hz:
- - 0x01 = 1000 Hz
- - 0x02 = 500 Hz
- - 0x03 = 333 Hz
- - 0x04 = 250 Hz
- - 0x05 = 200 Hz
- - 0x08 = 125 Hz
+
+| Value | Refresh rate |
+| ----- | ------------ |
+| 0x01  | 1000 Hz      |
+| 0x02  | 500 Hz       |
+| 0x03  | 333 Hz       |
+| 0x04  | 250 Hz       |
+| 0x05  | 200 Hz       |
+| 0x08  | 125 Hz       |
 
 
 #### Memory operation (0xA0)
