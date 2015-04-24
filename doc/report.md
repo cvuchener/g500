@@ -31,16 +31,43 @@ The report that does not contain the data (the output one when receiving or the 
 
 ### Message content
 
-The next byte in the report indicate what to query, for the G500 they are:
- - 0x0F for profile related queries (short).
- - 0x51 for LEDs status (short) (same as for the G5).
- - 0x63 for the resolution for the current mode (long) (same as for the G5 but the G5 use a short format).
- - 0x64 for the USB refresh rate (short).
- - 0xA0 for performing operations on the memory (long).
- - 0xA1 is used for resetting the sequence number used for sending data to the memory (short).
- - 0xA2 for reading the content of the memory (long).
+The next byte in the report indicate what to query. The length of the data depends on the device.
+
+| Value | Description                                      | R/W | G5    | G500(s) |
+| ----- | ------------------------------------------------ | --- | ----- | ------- |
+| 0x00  | Notifications on the unifuing receiver           | R/W | short |         |
+| 0x01  | G5 special button behaviour (unknown for G500)   | R/W | short | short   |
+| 0x0F  | Profile related queries                          | R/W |       | short   |
+| 0x51  | LEDs status                                      | R/W | short | short   |
+| 0x57  | ?                                                | R/W |       | short   |
+| 0x61  | Optical sensor settings                          | R/W |       | short   |
+| 0x63  | Current resolution                               | R/W | short | long    |
+| 0x64  | USB refresh rate                                 | R/W | short | short   |
+| 0x78  | ?                                                | R   |       | short   |
+| 0xA0  | Internal memory operations                       | W   |       | long    |
+| 0xA1  | Resetting the sequence number                    | W   |       | short   |
+| 0xA2  | Internal memory reading                          | R   |       | long    |
+| 0xD0  | ?                                                | R/W | short | short   |
+| 0xD2  | ? (write unavailable on G5)                      | R   | short | short   |
+| 0xDA  | ? (error: unavailable)                           | R/W | short | short   |
+| 0xDB  | ? (error: unavailable)                           | R   | long  | long    |
+| 0xDE  | ? (error: unavailable)                           | R/W | short | short   |
+| 0xF0  | ?                                                | W   | short | short   |
+| 0xF1  | ? (first byte must be 1 or 2)                    | R   | short | short   |
 
 The rest of the bytes are specific to each case.
+
+
+#### Special button behaviour (0x01)
+
+ - **G5**: The data is a bit-field for enabling special buttons. Default value is 0x82.
+
+| Bit | Buttons            | Behaviour                                  |
+| --- | ------------------ | ------------------------------------------ |
+| 1   | Wheel tilt buttons | 0 = generic buttons, 1 = horizontal wheel  |
+| 4   | +/− buttons        | 0 = generic buttons, 1 = change resolution |
+
+ - **G500**: unknown purposes. Default value is 0x00.
 
 #### Profile queries (0x0F)
 
@@ -74,8 +101,12 @@ in   10 00 81 51 22 12 00
 ```
 The two lowest LEDs and the “running man” are on. The highest LED is off.
 
+With the G5, only the three regular LEDs can be read/set
+
 
 #### Resolution (0x63)
+
+##### G500
 
 The resolution is encoded in two 16 bits integer, one for the X axis and one for the Y axis. The value are not in dpi, you must multiply it by 400/17 to get the dpi value.
 
@@ -100,6 +131,19 @@ The current resolution is now 5700dpi.
 
 Higher resolution than the maximum (5700dpi = 0x00F3) will not generate any error but they will not be faster.
 
+
+##### G5
+
+The resolution is a single byte.
+
+| Value | Resolution |
+| ----- | ---------- |
+| 0x80  | 400 dpi    |
+| 0x81  | 800 dpi    |
+| 0x82  | 1600 dpi   |
+| 0x83  | 2000 dpi   |
+
+According g_hack.c, the G9 has resolution settings up to 0x87.
 
 #### USB refresh rate (0x64)
 
@@ -166,22 +210,6 @@ The parameters are:
 | 2     | byte       | ?                  | Same as byte 37 in the profile |
 
 Byte 0 is near zero when in the air, around 0x30 on cloth, around 0x70 on shiny plastic or glass.
-
-
-#### Other unknown types
-
-| Value | Read/Write | Length | Comment |
-| ----- | ---------- | ------ | ------- |
-| 0x01  | R/W        | short  |         |
-| 0x57  | R/W        | short  | All 3 parameter bytes can be read back |
-| 0x78  | R          | short  |         |
-| 0xD0  | R/W        | short  |         |
-| 0xD2  | R          | short  |         |
-| 0xDA  | R/W        | short  | Gives error code 0x0A |
-| 0xDB  | R          | long   | Gives error code 0x0A |
-| 0xDE  | R/W        | short  | Gives error code 0x0A |
-| 0xF0  | W          | short  |         |
-| 0xF1  | R          | short  | First byte in the parameters must be 1 or 2 |
 
 
 Sending data to the internal memory
