@@ -65,7 +65,7 @@ The rest of the bytes are specific to each case.
 | Bit | Buttons            | Behaviour                                  |
 | --- | ------------------ | ------------------------------------------ |
 | 1   | Wheel tilt buttons | 0 = generic buttons, 1 = horizontal wheel  |
-| 4   | +/− buttons        | 0 = generic buttons, 1 = change resolution |
+| 7   | +/− buttons        | 0 = generic buttons, 1 = change resolution |
 
  - **G500**: unknown purposes. Default value is 0x00.
 
