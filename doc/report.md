@@ -53,7 +53,7 @@ The next byte in the report indicate what to query. The length of the data depen
 | 0xDB  | ? (error: unavailable)                           | R   | long  | long    |
 | 0xDE  | ? (error: unavailable)                           | R/W | short | short   |
 | 0xF0  | ?                                                | W   | short | short   |
-| 0xF1  | ? (first byte must be 1 or 2)                    | R   | short | short   |
+| 0xF1  | Firmware infos                                   | R   | short | short   |
 
 The rest of the bytes are specific to each case.
 
@@ -198,6 +198,13 @@ Here is an example of LGS reading the data just after the profile (offset 0x27 m
 out  10 00 83 A2 02 27 00
 in   11 00 83 A2 4C 47 53 30 32 00 00 00 00 00 00 00 00 00 00 00
 ```
+
+
+#### Firmware Infos (0xF1)
+
+The first parameter byte specify what info to read:
+- 0x01 read firmware version. Bytes 1 and 2 in the answer contain respectively the firmware major and minor version number (in BCD).
+- 0x02 read the build number. Bytes 1 and 2 in the answer is the 16 bits big-endian build number.
 
 
 #### Optical sensor settings (0x61)
