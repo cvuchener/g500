@@ -39,7 +39,7 @@ The next byte in the report indicate what to query. The length of the data depen
 | 0x01  | G5 special button behaviour (unknown for G500)   | R/W | short | short   |
 | 0x0F  | Profile related queries                          | R/W |       | short   |
 | 0x51  | LEDs status                                      | R/W | short | short   |
-| 0x57  | ?                                                | R/W |       | short   |
+| 0x57  | LEDs color                                       | R/W |       | short   |
 | 0x61  | Optical sensor settings                          | R/W |       | short   |
 | 0x63  | Current resolution                               | R/W | short | long    |
 | 0x64  | USB refresh rate                                 | R/W | short | short   |
