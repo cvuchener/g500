@@ -19,9 +19,7 @@ The profile is 78 bytes long.
 | 21    | byte         | ?                              | usually 0xa2             |
 | 22    | byte         | USB refresh rate               | fraction of 1000Hz       |
 | 23–52 | struct array | 10 3-byte-long button bindings |                          |
-| 53-55 | struct array | 3-byte ?                       | 0x8f0000 for 1-4. 0xFFFFFF for profile 5 |
-| 56-60 | struct array | LGS02                          | See memory.md |
-| 61–77 |              | Profile name in LGS            |  |
+| 53–55 |              | ?                              | 0x8f0000 for 1-4. 0xFFFFFF for profile 5 |
 
 ### DPI mode
 
