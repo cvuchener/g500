@@ -42,7 +42,7 @@ The mouse button uses the same structure as in the HID mouse report.
 
 The modifier bit-field and the key usage use the same structure as in the HID keyboard report.
 
-### 0x83 – special G500 function.
+### 0x83 – Special G500 function
 
 | Bytes | Type       | Content            | Comment                  |
 | ----- | ---------- | ------------------ | ------------------------ |
@@ -56,7 +56,9 @@ The special functions are:
  - 0x0008: switch to previous DPI mode (default action of ‘−’ button).
 
 
-### 0x84 – consumer control. The next bytes are a 16 bits big-endian integer containing the HID usage from the consumer control page.
+### 0x84 – Consumer control
+
+The next bytes are a 16 bits big-endian integer containing the HID usage from the consumer control page.
 
 | Bytes | Type       | Content                | Comment                  |
 | ----- | ---------- | ---------------------- | ------------------------ |
