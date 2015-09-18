@@ -50,10 +50,10 @@ The modifier bit-field and the key usage use the same structure as in the HID ke
 | 1–2   | int16 le   | special function   | bit-field                |
 
 The special functions are:
-    - 0x0001: pan left (horizontal wheel −1).
-    - 0x0002: pan right (horizontal wheel +1).
-    - 0x0004: switch to next DPI mode (default action of ‘+’ button).
-    - 0x0008: switch to previous DPI mode (default action of ‘−’ button).
+ - 0x0001: pan left (horizontal wheel −1).
+ - 0x0002: pan right (horizontal wheel +1).
+ - 0x0004: switch to next DPI mode (default action of ‘+’ button).
+ - 0x0008: switch to previous DPI mode (default action of ‘−’ button).
 
 
 ### 0x84 – consumer control. The next bytes are a 16 bits big-endian integer containing the HID usage from the consumer control page.
