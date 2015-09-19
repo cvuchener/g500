@@ -6,9 +6,9 @@ A profile must be written at the beginning of a memory page. It fits in page 0, 
 When plugging the mouse, the profile from page 2 is loaded.
 
 There are different structures for profiles:
- - [Profile for G9](profile-g9.md) supported by:
+ - [Profile for G9](profile/g9.md) supported by:
    - G9 (c048)
- - [Profile for G500](profile-g500.md) supported by:
+ - [Profile for G500](profile/g500.md) supported by:
    - G500 (c068)
    - G500s (c24e)
 
