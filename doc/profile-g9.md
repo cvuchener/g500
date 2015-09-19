@@ -14,15 +14,12 @@ The profile is 78 bytes long.
 | 0–2   |              | LED color                      | RGB                      |
 | 3     |              | ?                              | 0x00 in 1-4. Profile 5 has 0xFF |
 | 4–18  | struct array | 5 3-byte-long DPI modes        |                          |
-| 19    | byte         | default DPI mode               | 1-indexed. Profile 5 is special (80 + index) |
+| 19    | byte         | default DPI mode               | 1-indexed. Profile 5 is special (0x80 + index) |
 | 20    | byte         | ?                              | usually 0x21             |
 | 21    | byte         | ?                              | usually 0xa2             |
 | 22    | byte         | USB refresh rate               | fraction of 1000Hz       |
-| 23–61 | struct array | 13 3-byte-long button bindings |                          |
-| 62    | struct array | 3-byte ?                       | 0x8f0000 for 1-4. 0xFFFFFF for profile 5 |
-| 63–74 |              | ?                              | All profiles have identical values |
-| 75    |              | ?                              | Goes from 31 -> 35 increasing for each profile|
-| 76–77 |              | ?                              |  usually 0x0000          |
+| 23–52 | struct array | 10 3-byte-long button bindings |                          |
+| 53–55 |              | ?                              | 0x8f0000 for 1-4. 0xFFFFFF for profile 5 |
 
 ### DPI mode
 
@@ -41,4 +38,4 @@ For the LEDs status, each half-byte from lowest to highest corresponds to:
  - Mid
  - Low
  - “Running man” icon
-
+-
