@@ -12,7 +12,8 @@ The profile is 78 bytes long.
 
 | Bytes | Type         | Content                        | Comment                  |
 | ----- | ------------ | ------------------------------ | ------------------------ |
-| 0–3   |              | ?                              | usually `FF 00 00 80` but may vary |
+| 0–2   | R8G8B8       | LED color                      | there is no RGB LED on the device |
+| 3     |              | ?                              | usually 0x80             |
 | 4–33  | struct array | 5 6-byte-long DPI modes        |                          |
 | 34    | byte         | angle correction               | 1: off, 2: on            |
 | 35    | byte         | default DPI mode               | current mode when plugging the mouse or loading profile |
