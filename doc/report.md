@@ -33,197 +33,33 @@ The report that does not contain the data (the output one when receiving or the 
 
 The next byte in the report indicate what to query. The length of the data depends on the device.
 
-| Value | Description                                      | R/W | G5    | G500(s) |
-| ----- | ------------------------------------------------ | --- | ----- | ------- |
-| 0x00  | Notifications on the unifuing receiver           | R/W | short |         |
-| 0x01  | G5 special button behaviour (unknown for G500)   | R/W | short | short   |
-| 0x0F  | Profile related queries                          | R/W |       | short   |
-| 0x51  | LEDs status                                      | R/W | short | short   |
-| 0x57  | LEDs color                                       | R/W |       | short   |
-| 0x61  | Optical sensor settings                          | R/W |       | short   |
-| 0x63  | Current resolution                               | R/W | short | long    |
-| 0x64  | USB refresh rate                                 | R/W | short | short   |
-| 0x78  | ?                                                | R   |       | short   |
-| 0xA0  | Internal memory operations                       | W   |       | long    |
-| 0xA1  | Resetting the sequence number                    | W   |       | short   |
-| 0xA2  | Internal memory reading                          | R   |       | long    |
-| 0xD0  | ?                                                | R/W | short | short   |
-| 0xD2  | ? (write unavailable on G5)                      | R   | short | short   |
-| 0xDA  | ? (error: unavailable)                           | R/W | short | short   |
-| 0xDB  | ? (error: unavailable)                           | R   | long  | long    |
-| 0xDE  | ? (error: unavailable)                           | R/W | short | short   |
-| 0xF0  | ?                                                | W   | short | short   |
-| 0xF1  | Firmware infos                                   | R   | short | short   |
+| Value | Description                                           | R/W | G5    | G500(s) |
+| ----- | ----------------------------------------------------- | --- | ----- | ------- |
+| 0x00  | Notifications on the unifuing receiver                | R/W | short |         |
+| 0x01  | [Individual features](commands/01-features.md)        | R/W | short | short   |
+| 0x0F  | [Profile related queries](commands/0f-profile.md)     | R/W |       | short   |
+| 0x51  | [LEDs status](commands/51-leds.md)                    | R/W | short | short   |
+| 0x57  | LEDs color                                            | R/W |       | short   |
+| 0x61  | [Optical sensor settings](commands/61-sensor.md)      | R/W |       | short   |
+| 0x63  | [Current resolution](commands/63-resolution.md)       | R/W | short | long    |
+| 0x64  | [USB refresh rate](commands/64-usbrate.md)            | R/W | short | short   |
+| 0x78  | ?                                                     | R   |       | short   |
+| 0xA0  | [Internal memory operations](commands/a0-memop.md)    | W   |       | long    |
+| 0xA1  | [Resetting the sequence number](commands/a1-seqnum.md)| W   |       | short   |
+| 0xA2  | [Internal memory reading](commands/a2-memread.md)     | R   |       | long    |
+| 0xD0  | ?                                                     | R/W | short | short   |
+| 0xD2  | ? (write unavailable on G5)                           | R   | short | short   |
+| 0xDA  | ? (error: unavailable)                                | R/W | short | short   |
+| 0xDB  | ? (error: unavailable)                                | R   | long  | long    |
+| 0xDE  | ? (error: unavailable)                                | R/W | short | short   |
+| 0xF0  | ?                                                     | W   | short | short   |
+| 0xF1  | [Firmware infos](commands/f1-fwinfos.md)              | R   | short | short   |
 
 The rest of the bytes are specific to each case.
 
 
-#### Special button behaviour (0x01)
-
- - **G5**: The data is a bit-field for enabling special buttons. Default value is 0x82.
-
-| Bit | Buttons            | Behaviour                                  |
-| --- | ------------------ | ------------------------------------------ |
-| 1   | Wheel tilt buttons | 0 = generic buttons, 1 = horizontal wheel  |
-| 7   | +/− buttons        | 0 = generic buttons, 1 = change resolution |
-
- - **G500**: unknown purposes. Default value is 0x00.
-
-#### Profile queries (0x0F)
-
-When sending, this message changes the current profile.
-There seems to be 5 possible value for the first byte.
- - 0xFF is used by LGS before writing a new profile. It seems to set a default profile not from the memory.
- - 0x00 is used by LGS after writing the new profile. It sets the mouse to use the default profile at page 0x02.
- - 0x01 sets the current profile to one whose page is in the next byte. (10 00 0F 01 03 00 set the current profile to the one in page 0x03).
- - 0x02 looks similar to 0x00.
- - 0x03 looks similar to 0x01.
-
-Other values will get an error message.
-
-When reading, the first byte will be 0x00 if a profile from memory is used or 0xFF if no profile is used.
-
-
-#### LEDs (0x51)
-
-The format for sending or reading is the same.
-The LEDs state is stored in a 16 bits little-endian integer where each half-byte represents a LED. 1 means the LED is off, 2 means it is on.
-Each half-byte from lowest to highest corresponds to:
- - High
- - Mid
- - Low
- - “Running man” icon
-
-Example reading LED state:
-```
-out  10 00 81 51 00 00 00
-in   10 00 81 51 22 12 00
-```
-The two lowest LEDs and the “running man” are on. The highest LED is off.
-
-With the G5, only the three regular LEDs can be read/set
-
-
-#### Resolution (0x63)
-
-##### G500
-
-The resolution is encoded in two 16 bits integer, one for the X axis and one for the Y axis. The value are not in dpi, for the G500, 17 units correspond to 400 dpi; for the G500s, 1 unit corresponds to 50 dpi.
-
-The data size for these queries is 6 bytes: 4 bytes for the two resolution value in little-endian and 2 bytes for unknown purposes. Writing those 2 bytes does not seem to change anything. When reading they usually are 80 01, but they can also be FF FF for an invalid profile. The rest of the bytes are uninitialized (they have the same value as in the last long report from the device).
-
-Example on the G500:
-```
-out  10 00 83 63 00 00 00
-in   11 00 83 63 22 00 22 00 80 01 00 00 00 00 00 00 00 00 00 00
-```
-The current resolution is 400 dpi (0x0022).
-```
-out  11 00 82 63 F3 00 F3 00 00 00 00 00 00 00 00 00 00 00 00 00
-in   10 00 82 63 00 00 00
-```
-Set the current resolution to 5700 dpi (0x00F3).
-```
-out  10 00 83 63 00 00 00
-in   11 00 83 63 F3 00 F3 00 80 01 00 00 00 00 00 00 00 00 00 00
-```
-The current resolution is now 5700 dpi.
-
-Higher resolution than the maximum (5700 dpi = 0x00F3 for the G500, 8200 dpi = 0x00A4 for the G500s) will not generate any error but they will not be faster.
-
-
-##### G5
-
-The resolution is a single byte.
-
-| Value | Resolution |
-| ----- | ---------- |
-| 0x80  | 400 dpi    |
-| 0x81  | 800 dpi    |
-| 0x82  | 1600 dpi   |
-| 0x83  | 2000 dpi   |
-
-According g_hack.c, the G9 has resolution settings up to 0x87.
-
-#### USB refresh rate (0x64)
-
-The USB refresh rate is encoded in a single byte. The value is the divisor of 1000 Hz:
-
-| Value | Refresh rate |
-| ----- | ------------ |
-| 0x01  | 1000 Hz      |
-| 0x02  | 500 Hz       |
-| 0x03  | 333 Hz       |
-| 0x04  | 250 Hz       |
-| 0x05  | 200 Hz       |
-| 0x08  | 125 Hz       |
-
-
-#### Memory operation (0xA0)
-
-These long report performs operations on the internal memory. Following bytes in the report are:
-
-| Bytes | Type       | Content            | Comment                  |
-| ----- | ---------- | ------------------ | ------------------------ |
-| 0     | byte       | operation          |                          |
-| 1     |            | ?                  |                          |
-| 2     | byte       | source offset      | for operation 4          |
-| 3     | byte       | source length      | for operation 4          |
-| 4–5   |            | ?                  |                          |
-| 6     | byte       | destination page   |                          |
-| 7     | byte       | destination offset | unused for operation 2   |
-| 8–9   |            | ?                  |                          |
-| 10–11 | int16  be  | length             | for operation 3          |
-| 12–15 |            | ?                  |                          |
-
-The known operation are:
- - 2: Fill the *destination page* with 0xFF (does not use *offset* or *length*). This this useful before AND’ing data. This has no effect on page 0 (temporary memory).
- - 3: Copy or AND *length* bytes of data in page 0 to the *destination page* at *destination offset*
- - 4: Copy or AND *source length* bytes from *source offset* from an unknown static source of data at *destination offset* in *destination offset*. I have seen the report in Vladyslav Shtabovenko’s g500-control.c, SetPoint then read what was written but I don’t know why.
-
-Writing data works differently based on the page. In page 0, data replace the previous values. In other pages, the data is AND’ed, so you need to fill the page with 0xFF before writing in order to replace.
-
-
-#### Sequence number (0xA1)
-
-The only known report with this value is: `10 00 80 A1 01 00 00`. It is used for resetting the sequence number used by the memory writing reports (message type 0x90-0x93).
-
-
-#### Reading memory (0xA2)
-
-This message is used to retrieve data (exactly 16 bytes) from the internal memory. The query parameters are the page and offset of the data you want to read. The answer last 16 bytes are the data.
-
-Here is an example of LGS reading the data just after the profile (offset 0x27 means from byte 0x4E) in page 2. The data is a string (`4C 47 53 30 32` = "LGS02") that LGS stores there for itself.
-```
-out  10 00 83 A2 02 27 00
-in   11 00 83 A2 4C 47 53 30 32 00 00 00 00 00 00 00 00 00 00 00
-```
-
-
-#### Firmware Infos (0xF1)
-
-The first parameter byte specify what info to read:
-- 0x01 read firmware version. Bytes 1 and 2 in the answer contain respectively the firmware major and minor version number (in BCD).
-- 0x02 read the build number. Bytes 1 and 2 in the answer is the 16 bits big-endian build number.
-
-
-#### Optical sensor settings (0x61)
-
-These settings are not really understood but they seem to be related to the optical sensor. Values can be read or written.
-
-The parameters are:
-
-| Bytes | Type       | Content            | Comment                  |
-| ----- | ---------- | ------------------ | ------------------------ |
-| 0     | byte       | Volatile sensor-related value | Read-only. Maybe the reflectiveness of the material under the sensor |
-| 1     | byte       | Movement filter?   | Same as byte 36 in the profile |
-| 2     | byte       | ?                  | Same as byte 37 in the profile |
-
-Byte 0 is near zero when in the air, around 0x30 on cloth, around 0x70 on shiny plastic or glass.
-
-
 Sending data to the internal memory
---------------------------
+-----------------------------------
 
 Data is sent in blocks to the internal memory. Values are replaced in the temporary memory (page 0) but is AND’ed in the permanent memory.
 
