@@ -39,3 +39,21 @@ For the LEDs status, each half-byte from lowest to highest corresponds to:
  - Low
  - “Running man” icon
 
+### Buttons
+
+| Button | G500, G500s      |
+| ------ | ---------------- |
+| 0      | Left button      |
+| 1      | Right button     |
+| 2      | Wheel button     |
+| 3      | Thumb back       |
+| 4      | Thumb forward    |
+| 5      | Thumb middle     |
+| 6      | Wheel tilt left  |
+| 7      | Wheel tilt right |
+| 8      | DPI +            |
+| 9      | DPI −            |
+| 10     | N/A              |
+| 11     | N/A              |
+| 12     | N/A              |
+
