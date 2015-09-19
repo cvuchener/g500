@@ -27,8 +27,8 @@ For each DPI mode, the structure is:
 
 | Bytes | Type       | Content            | Comment                  |
 | ----- | ---------- | ------------------ | ------------------------ |
-| 0–1   | int16 be   | X resolution       | dpi × 17 ÷ 400           |
-| 2–3   | int16 be   | Y resolution       | dpi × 17 ÷ 400           |
+| 0–1   | int16 be   | X resolution       | see [resolution](resolution.md) |
+| 2–3   | int16 be   | Y resolution       | see [resolution](resolution.md) |
 | 4–5   | int16 le   | LEDs status        | each half-byte is a LED: 1: off, 2: on  |
 
 All bytes are null when the mode is disabled.
