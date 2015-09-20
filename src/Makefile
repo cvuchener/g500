@@ -15,6 +15,7 @@ EXE_SRC=g500-dump-page.c \
 	g500-parse-macro.c \
 	g500-edit-profile.c \
 	check-hidraw-logitech-reports.c \
+	logitech-raw-command.c \
 	send-raw-request.c
 LIB_SRC=logitech.c g500.c
 
