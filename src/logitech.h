@@ -50,12 +50,28 @@ int logitech_report_in (int fd, struct logitech_report_t *report);
 
 #define LOGITECH_REPORT_ERROR	0x8F
 
+#define LOGITECH_ERROR_INVALID_SUBID	0x01
+#define LOGITECH_ERROR_INVALID_ADDRESS	0x02
+#define LOGITECH_ERROR_INVALID_VALUE	0x03
+#define LOGITECH_ERROR_CONNECT_FAIL	0x04
+#define LOGITECH_ERROR_TOO_MANY_DEVICES	0x05
+#define LOGITECH_ERROR_ALREADY_EXISTS	0x06
+#define LOGITECH_ERROR_BUSY	0x07
+#define LOGITECH_ERROR_UNKNOWN_DEVICE	0x08
+#define LOGITECH_ERROR_RESOURCE_ERROR	0x09
+#define LOGITECH_ERROR_REQUEST_UNAVAILABLE	0x0A
+#define LOGITECH_ERROR_INVALID_PARAM_VALUE	0x0B
+#define LOGITECH_ERROR_WRONG_PIN_CODE	0x0C
+#define LOGITECH_ERROR_MAX	0x0C
+
+extern const char *logitech_error_string[LOGITECH_ERROR_MAX+1];
+
 /**
  * Test if report is an error report. Set query_code and error_code to the value in the error report.
  *
  * Return non-zero if report is an error report.
  */
-int logitech_is_error_report (const struct logitech_report_t *report, uint8_t *query_code, uint16_t *error_code);
+int logitech_is_error_report (const struct logitech_report_t *report, uint8_t *query_code, uint8_t *error_code);
 
 #define LOGITECH_SEND_SHORT	0x80
 #define LOGITECH_READ_SHORT	0x81

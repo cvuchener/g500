@@ -154,7 +154,7 @@ int g500_send_data (int fd, uint8_t type, uint8_t seq_num, const uint8_t *data) 
 		if (-1 == logitech_report_in (fd, &report_in))
 			return -1;
 		
-		uint16_t error_code;
+		uint8_t error_code;
 		if (logitech_is_error_report (&report_in, NULL, &error_code)) {
 #ifdef DEBUG
 			fprintf (stderr, "Received error code %d\n", error_code);

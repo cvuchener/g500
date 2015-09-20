@@ -9,7 +9,7 @@ const char *usage = "Usage: %s hidraw command read|write short|long parameters..
 
 int main (int argc, char *argv[])
 {
-	int i;
+	int ret, i;
 	char *endptr;
 	int fd;
 	int command;
@@ -62,8 +62,17 @@ int main (int argc, char *argv[])
 		params[i-5] = p;
 	}
 
-	if (-1 == logitech_query (fd, type, command, params, data)) {
+	ret = logitech_query (fd, type, command, params, data);
+	if (ret == -1) {
+		fprintf (stderr, "Command failed.\n");
 		return EXIT_FAILURE;
+	}
+	if (ret > 0) {
+		if (ret <= LOGITECH_ERROR_MAX)
+			fprintf (stderr, "Error: %s.\n", logitech_error_string[ret]);
+		else
+			fprintf (stderr, "Unknown error: %d.\n", ret);
+		return ret;
 	}
 
 	data_size = (type == LOGITECH_READ_LONG ? 16 : 3);

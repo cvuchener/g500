@@ -102,12 +102,27 @@ int logitech_report_in (int fd, struct logitech_report_t *report) {
 	return 0;
 }
 
-int logitech_is_error_report (const struct logitech_report_t *report, uint8_t *query_code, uint16_t *error_code) {
+const char *logitech_error_string[] = {
+	[LOGITECH_ERROR_INVALID_SUBID] = "Invalid subID",
+	[LOGITECH_ERROR_INVALID_ADDRESS] = "Invalid address",
+	[LOGITECH_ERROR_INVALID_VALUE] = "Invalid value",
+	[LOGITECH_ERROR_CONNECT_FAIL] = "Connect fail",
+	[LOGITECH_ERROR_TOO_MANY_DEVICES] = "Too many devices",
+	[LOGITECH_ERROR_ALREADY_EXISTS] = "Already exists",
+	[LOGITECH_ERROR_BUSY] = "Busy",
+	[LOGITECH_ERROR_UNKNOWN_DEVICE] = "Unknown device",
+	[LOGITECH_ERROR_RESOURCE_ERROR] = "Resource error",
+	[LOGITECH_ERROR_REQUEST_UNAVAILABLE] = "Request unavailable",
+	[LOGITECH_ERROR_INVALID_PARAM_VALUE] = "Invalid parameter",
+	[LOGITECH_ERROR_WRONG_PIN_CODE] = "Wron PIN code",
+};
+
+int logitech_is_error_report (const struct logitech_report_t *report, uint8_t *query_code, uint8_t *error_code) {
 	if (report->id == LOGITECH_REPORT_SHORT && report->data[0] == 0x00 && report->data[1] == LOGITECH_REPORT_ERROR) {
 		if (query_code)
 			*query_code = report->data[2];
 		if (error_code)
-			*error_code = le16toh (*(uint16_t *)&report->data[4]);
+			*error_code = report->data[4];
 		return 1;
 	}
 	return 0;
@@ -150,12 +165,12 @@ int logitech_query (int fd, uint8_t query, uint8_t type, const uint8_t *params, 
 	if (-1 == logitech_report_in (fd, &report_in)) 
 		return -1;
 
-	uint16_t error_code;
+	uint8_t error_code;
 	if (logitech_is_error_report (&report_in, NULL, &error_code)) {
 #ifdef DEBUG
 		fprintf (stderr, "Received error code %d\n", error_code);
 #endif
-		return -1;
+		return error_code;
 	}
 	if (report_in.id != expected_in_report_type || report_in.data[1] != query || report_in.data[2] != type) {
 #ifdef DEBUG
