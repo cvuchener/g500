@@ -11,6 +11,8 @@ There are different structures for profiles:
  - [Profile for G500](profile/g500.md) supported by:
    - G500 (c068)
    - G500s (c24e)
+ - [Profile for G700s](profile/g700s.md) supported by:
+   - G700s
 
 Button binding
 --------------
@@ -19,6 +21,7 @@ Supported devices:
  - G9 (c048)
  - G500 (c068)
  - G500s (c24e)
+ - G700s
 
 Each button is 3 byte long.  The first byte indicate the binding type, the next two bytes depends on the type:
 
