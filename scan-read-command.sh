@@ -24,7 +24,7 @@ for i in {0..255}; do
 			;;
 		
 		*)
-			printf "Error: %s\n" $error
+			printf "Command 0x%02x: $type - error: %d\n" $error
 			exit -1
 		esac
 	done
