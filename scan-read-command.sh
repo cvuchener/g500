@@ -6,25 +6,30 @@ for i in {0..255}; do
 	for type in short long; do
 		data=$(src/logitech-raw-command "$hidraw" $i read $type 2> /dev/null)
 		error=$?
+		if [ "$error" -eq 2 ]; then
+			continue
+		fi
+		printf "Command 0x%02x: $type" $i
 		case $error in
 		0)
-			printf "Command 0x%02x: $type\n" $i
+			printf "\n"
 			echo $data
 			;;
 
-		2)
+		3)
+			printf " - invalid value\n"
 			;;
 
 		10)
-			printf "Command 0x%02x: $type - unavailable\n" $i
+			printf " - unavailable\n"
 			;;
 
 		11)
-			printf "Command 0x%02x: $type - invalid params\n" $i
+			printf " - invalid params\n"
 			;;
 		
 		*)
-			printf "Command 0x%02x: $type - error: %d\n" $error
+			printf " - error: %d\n" $error
 			exit -1
 		esac
 	done
