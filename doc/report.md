@@ -138,9 +138,20 @@ in   10 00 8F 80 A1 0B 00
 
 ### Error code
 
-| Value | Possible meaning           |
-| ----- | -------------------------- |
-| 0x01  | Invalid report type or message length |
-| 0x02  | Invalid query type         |
-| 0x0A  | Request unavailable (according to hid-logitech-hidpp linux driver) |
-| 0x0B  | Invalid parameters         |
+| Value | Name                    | Description                           |
+| ----- | ----------------------- | ------------------------------------- |
+| 0x00  | ERR_SUCCESS             |                                       |
+| 0x01  | ERR_INVALID_SUBID       | Invalid report type or message length |
+| 0x02  | ERR_INVALID_ADDRESS     | Invalid query type                    |
+| 0x03  | ERR_INVALID_VALUE       |                                       |
+| 0x04  | ERR_CONNECT_FAIL        | Unifying Receiver error               |
+| 0x05  | ERR_TOO_MANY_DEVICES    | Unifying Receiver error               |
+| 0x06  | ERR_ALREADY_EXISTS      | Unifying Receiver error               |
+| 0x07  | ERR_BUSY                | Unifying Receiver error               |
+| 0x08  | ERR_UNKNOWN_DEVICE      | Unifying Receiver error               |
+| 0x09  | ERR_RESOURCE_ERROR      | Unifying Receiver error               |
+| 0x0A  | ERR_REQUEST_UNAVAILABLE |                                       |
+| 0x0B  | ERR_INVALID_PARAM_VALUE |                                       |
+| 0x0C  | ERR_WRONG_PIN_CODE      |                                       |
+
+For invalid parameters some devices use ERR_INVALID_VALUE instead of ERR_INVALID_PARAM_VALUE.
