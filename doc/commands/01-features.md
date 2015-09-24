@@ -14,6 +14,8 @@ Features bits are in parameter bytes 0 and 2:
 | 18  | 3D engine                  | disabled | enabled  |
 | 19  | LEDs control               | hardware | software |
 
+Setting the bit for an unsupported feature will not generate any error message but the bit will not be set when reading.
+
 ### G5
 
 The G5 uses this to set some buttons behavior: “Special button function” controls the wheel tilt buttons, “Buttons control resolution” controls the + and − buttons.
