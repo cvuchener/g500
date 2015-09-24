@@ -33,27 +33,31 @@ The report that does not contain the data (the output one when receiving or the 
 
 The next byte in the report indicate what to query. The length of the data depends on the device.
 
-| Value | Description                                           | R/W | G5    | G500(s) |
-| ----- | ----------------------------------------------------- | --- | ----- | ------- |
-| 0x00  | Notifications on the unifuing receiver                | R/W | short |         |
-| 0x01  | [Individual features](commands/01-features.md)        | R/W | short | short   |
-| 0x0F  | [Profile related queries](commands/0f-profile.md)     | R/W |       | short   |
-| 0x51  | [LEDs status](commands/51-leds.md)                    | R/W | short | short   |
-| 0x57  | LEDs color                                            | R/W |       | short   |
-| 0x61  | [Optical sensor settings](commands/61-sensor.md)      | R/W |       | short   |
-| 0x63  | [Current resolution](commands/63-resolution.md)       | R/W | short | long    |
-| 0x64  | [USB refresh rate](commands/64-usbrate.md)            | R/W | short | short   |
-| 0x78  | ?                                                     | R   |       | short   |
-| 0xA0  | [Internal memory operations](commands/a0-memop.md)    | W   |       | long    |
-| 0xA1  | [Resetting the sequence number](commands/a1-seqnum.md)| W   |       | short   |
-| 0xA2  | [Internal memory reading](commands/a2-memread.md)     | R   |       | long    |
-| 0xD0  | ?                                                     | R/W | short | short   |
-| 0xD2  | ? (write unavailable on G5)                           | R   | short | short   |
-| 0xDA  | ? (error: unavailable)                                | R/W | short | short   |
-| 0xDB  | ? (error: unavailable)                                | R   | long  | long    |
-| 0xDE  | ? (error: unavailable)                                | R/W | short | short   |
-| 0xF0  | ?                                                     | W   | short | short   |
-| 0xF1  | [Firmware infos](commands/f1-fwinfos.md)              | R   | short | short   |
+| Value | Description                                           | R/W | UR    | G5    | G500(s) |
+| ----- | ----------------------------------------------------- | --- | ----- | ----- | ------- |
+| 0x00  | Enable notifications                                  | R/W | short | short |         |
+| 0x01  | [Individual features](commands/01-features.md)        | R/W |       | short | short   |
+| 0x02  | Connection state                                      | R/W | short |       |         |
+| 0x0F  | [Profile related queries](commands/0f-profile.md)     | R/W |       |       | short   |
+| 0x51  | [LEDs status](commands/51-leds.md)                    | R/W |       | short | short   |
+| 0x57  | LEDs color                                            | R/W |       |       | short   |
+| 0x61  | [Optical sensor settings](commands/61-sensor.md)      | R/W |       |       | short   |
+| 0x63  | [Current resolution](commands/63-resolution.md)       | R/W |       | short | long    |
+| 0x64  | [USB refresh rate](commands/64-usbrate.md)            | R/W |       | short | short   |
+| 0x78  | ?                                                     | R   |       |       | short   |
+| 0xA0  | [Internal memory operations](commands/a0-memop.md)    | W   |       |       | long    |
+| 0xA1  | [Resetting the sequence number](commands/a1-seqnum.md)| W   |       |       | short   |
+| 0xA2  | [Internal memory reading](commands/a2-memread.md)     | R   |       |       | long    |
+| 0xB2  | Device Connection (Pairing)                           | W   | short |       |         |
+| 0xB3  | Device Activity                                       | R   | long  |       |         |
+| 0xB5  | Device Pairing information                            | R/W | long  |       |         |
+| 0xD0  | ?                                                     | R/W |       | short | short   |
+| 0xD2  | ? (write unavailable on G5)                           | R   |       | short | short   |
+| 0xDA  | ? (error: unavailable)                                | R/W |       | short | short   |
+| 0xDB  | ? (error: unavailable)                                | R   |       | long  | long    |
+| 0xDE  | ? (error: unavailable)                                | R/W |       | short | short   |
+| 0xF0  | ?                                                     | W   |       | short | short   |
+| 0xF1  | [Firmware infos](commands/f1-fwinfos.md)              | R   |       | short | short   |
 
 The rest of the bytes are specific to each case.
 
