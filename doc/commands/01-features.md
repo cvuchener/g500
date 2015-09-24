@@ -20,5 +20,5 @@ The G5 uses this to set some buttons behavior: “Special button function” con
 
 ### G500
 
-Unknown purposes. Default value is 0x00.
+The G500 only supports the “Scrolling acceleration” feature.
 
