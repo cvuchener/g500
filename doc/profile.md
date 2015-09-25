@@ -50,13 +50,16 @@ The modifier bit-field and the key usage use the same structure as in the HID ke
 | Bytes | Type       | Content            | Comment                  |
 | ----- | ---------- | ------------------ | ------------------------ |
 | 0     | byte       | binding type       | 0x83                     |
-| 1–2   | int16 le   | special function   | bit-field                |
+| 1–2   | int16 le   | special function   |                          |
 
 The special functions are:
- - 0x0001: pan left (horizontal wheel −1).
- - 0x0002: pan right (horizontal wheel +1).
- - 0x0004: switch to next DPI mode (default action of ‘+’ button).
- - 0x0008: switch to previous DPI mode (default action of ‘−’ button).
+ - 0x0001: pan left (horizontal wheel −1) (G500(s), G700s).
+ - 0x0002: pan right (horizontal wheel +1) (G500(s), G700s).
+ - 0x0003: battery level (G700s)
+ - 0x0004: next DPI mode (G500(s), G700s).
+ - 0x0008: previous DPI mode (G500(s), G700s).
+ - 0x0009: cycle DPI mode (G700s)
+ - 0x0011: switch profile (G700s)
 
 
 ### 0x84 – Consumer control
