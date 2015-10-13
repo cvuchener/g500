@@ -1,20 +1,41 @@
 0x51 – LEDs
 ===========
 
-The format for sending or reading is the same.
-The LEDs state is stored in a 16 bits little-endian integer where each half-byte represents a LED. 1 means the LED is off, 2 means it is on.
-Each half-byte from lowest to highest corresponds to:
- - High
- - Mid
- - Low
- - “Running man” icon
+Each half-byte is a LED (low half-byte comes first).
 
-Example reading LED state:
-```
-out  10 00 81 51 00 00 00
-in   10 00 81 51 22 12 00
-```
-The two lowest LEDs and the “running man” are on. The highest LED is off.
+| Value | Description      |
+| ----- | ---------------- |
+| 0x0	| No change/No LED |
+| 0x1   | Off              |
+| 0x2   | On               |
+| 0x3   | Blink            |
+| 0x4   | Heartbeat        |
+| 0x5   | Slow on          |
+| 0x6   | Slow off         |
 
-With the G5, only the three regular LEDs can be read/set
+G5
+--
+
+Only “Off” and “On” are supported. Other values don’t change the LED state.
+
+| Index | LED    |
+| ----- | ------ |
+| 0     | Low    |
+| 1     | Middle |
+| 2     | High   |
+
+The “Running man” logo is always on.
+
+
+G500
+----
+
+Only “Off” and “On” are supported. “Blink” and “Slow on” set the LED off, “Slow off” set the LED on, “Heartbeat” don’t change the LED state.
+
+| Index | LED                |
+| ----- | ------------------ |
+| 0     | “Running man” logo |
+| 1     | Low                |
+| 2     | Middle             |
+| 3     | High               |
 
