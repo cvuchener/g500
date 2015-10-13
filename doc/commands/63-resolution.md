@@ -3,9 +3,14 @@
 
 ### G500
 
-The resolution is encoded in two 16 bits integer, one for the X axis and one for the Y axis. The value are not in dpi, for the G500, 17 units correspond to 400 dpi; for the G500s, 1 unit corresponds to 50 dpi.
+| Bytes | Type     | Description                                 |
+| ----- | -------- | ------------------------------------------- |
+| 0–1   | int16 le | X resolution                                |
+| 2–3   | int16 le | Y resolution                                |
+| 4     | byte     | ? (0 = no change), default is 0x80          |
+| 5     | byte     | Angle snap (0 = no change, 1 = off, 2 = on) |
 
-The data size for these queries is 6 bytes: 4 bytes for the two resolution value in little-endian and 2 bytes for unknown purposes. Writing those 2 bytes does not seem to change anything. When reading they usually are 80 01, but they can also be FF FF for an invalid profile. The rest of the bytes are uninitialized (they have the same value as in the last long report from the device).
+The resolution values are not in dpi, see [resolution.md](../resolution.md) for how to convert them.
 
 Example on the G500:
 ```
