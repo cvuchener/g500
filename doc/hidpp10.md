@@ -12,9 +12,11 @@ Short and long reports are use the same way. The long report is used when the da
 
 
 Known Sub IDs are:
-  - 0x40–…: Notifications
-  - 0x80–0x8F: Register access
-  - 0x90–0x93: Writing data to memory
+ - 0x00–0x0F: Device notifications
+ - 0x40–0x4F: Unifying receiver notifications
+ - 0x50: Memory writing notifications
+ - 0x80–0x8F: Register access
+ - 0x90–0x93: Writing data to memory
 
 
 Register access
