@@ -49,7 +49,7 @@ The format for report with Sub IDs 0x80 to 0x83 is:
 | 0x00     | Enable notifications                                  | R/W | short | short |         | short |
 | 0x01     | [Individual features](commands/01-features.md)        | R/W |       | short | short   | short |
 | 0x02     | Connection state                                      | R/W | short |       |         |       |
-| 0x07     | ?                                                     | R/? |       |       |         | short |
+| 0x07     | [Battery status](commands/07-battery-status.md)       | R/? |       |       |         | short |
 | 0x0F     | [Profile related queries](commands/0f-profile.md)     | R/W |       |       | short   | short |
 
 #### 0x20–0x2F: Pairing information registers (UR)
