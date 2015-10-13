@@ -7,7 +7,7 @@
 | ----- | -------- | ------------------------------------------- |
 | 0–1   | int16 le | X resolution                                |
 | 2–3   | int16 le | Y resolution                                |
-| 4     | byte     | ? (0 = no change), default is 0x80          |
+| 4     | byte     | Angle? (0 = no change), default is 0x80     |
 | 5     | byte     | Angle snap (0 = no change, 1 = off, 2 = on) |
 
 The resolution values are not in dpi, see [resolution.md](../resolution.md) for how to convert them.
