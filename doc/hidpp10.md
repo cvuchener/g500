@@ -62,8 +62,9 @@ The format for report with Sub IDs 0x80 to 0x83 is:
 
 | Register | Description                                           | R/W | G5    | G500(s) | G700s |
 | -------- | ----------------------------------------------------- | --- | ----- | ------- | ----- |
-| 0x51     | [LEDs status](commands/51-leds.md)                    | R/W | short | short   | short |
-| 0x57     | LEDs color                                            | R/W |       | short   |       |
+| 0x51     | [LED status](commands/51-leds.md)                     | R/W | short | short   | short |
+| 0x54     | [LED intensity](commands/54-led-intensity.md)         | R/W |       |         |       |
+| 0x57     | LED color                                             | R/W |       | short   |       |
 
 #### 0x60–0x6F: Mouse sensor registers
 
