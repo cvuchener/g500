@@ -30,7 +30,7 @@ int g500_disable_profile (int fd) {
 	struct g500_profile_params_t params;
 	memset (&params, 0, sizeof (params));
 	params.unk1 = 0xFF;
-	if (-1 == logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_PROFILE, (uint8_t *)&params, NULL))
+	if (0 != logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_PROFILE, (uint8_t *)&params, NULL))
 		return -1;
 	return 0;
 }
@@ -38,7 +38,7 @@ int g500_disable_profile (int fd) {
 int g500_use_default_profile (int fd) {
 	struct g500_profile_params_t params;
 	memset (&params, 0, sizeof (params));
-	if (-1 == logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_PROFILE, (uint8_t *)&params, NULL))
+	if (0 != logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_PROFILE, (uint8_t *)&params, NULL))
 		return -1;
 	return 0;
 }
@@ -48,14 +48,14 @@ int g500_use_profile (int fd, uint8_t profile_page) {
 	memset (&params, 0, sizeof (params));
 	params.unk1 = 0x01;
 	params.profile_page = profile_page;
-	if (-1 == logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_PROFILE, (uint8_t *)&params, NULL))
+	if (0 != logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_PROFILE, (uint8_t *)&params, NULL))
 		return -1;
 	return 0;
 }
 
 int g500_get_leds (int fd) {
 	struct g500_leds_params_t params;
-	if (-1 == logitech_query (fd, LOGITECH_READ_SHORT, G500_QUERY_TYPE_LEDS, NULL, (uint8_t *)&params))
+	if (0 != logitech_query (fd, LOGITECH_READ_SHORT, G500_QUERY_TYPE_LEDS, NULL, (uint8_t *)&params))
 		return -1;
 	return le16toh (params.leds);
 }
@@ -64,7 +64,7 @@ int g500_set_leds (int fd, int leds) {
 	struct g500_leds_params_t params;
 	params.leds = htole16 (leds);
 	params.unknown = 0;
-	if (-1 == logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_LEDS, (uint8_t *)&params, NULL))
+	if (0 != logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_LEDS, (uint8_t *)&params, NULL))
 		return -1;
 	return 0;
 }
@@ -79,7 +79,7 @@ int g500_unpack_resolution (uint16_t resolution) {
 
 int g500_get_resolution (int fd, int resolution[2]) {
 	struct g500_resolution_params_t params;
-	if (-1 == logitech_query (fd, LOGITECH_READ_LONG, G500_QUERY_TYPE_RESOLUTION, NULL, (uint8_t *)&params))
+	if (0 != logitech_query (fd, LOGITECH_READ_LONG, G500_QUERY_TYPE_RESOLUTION, NULL, (uint8_t *)&params))
 		return  -1;
 	int i;
 	for (i = 0; i < 2; ++i)
@@ -93,7 +93,7 @@ int g500_set_resolution (int fd, const int resolution[2]) {
 	for (i = 0; i < 2; ++i)
 		params.resolution[i] = htole16 (g500_pack_resolution (resolution[i]));
 	params.unknown[0] = params.unknown[1] = 0;
-	if (-1 == logitech_query (fd, LOGITECH_SEND_LONG, G500_QUERY_TYPE_RESOLUTION, (uint8_t *)&params, NULL))
+	if (0 != logitech_query (fd, LOGITECH_SEND_LONG, G500_QUERY_TYPE_RESOLUTION, (uint8_t *)&params, NULL))
 		return -1;
 	return 0;
 }
@@ -108,7 +108,7 @@ int g500_unpack_refresh_rate (uint8_t refresh_rate) {
 
 int g500_get_refresh_rate (int fd) {
 	struct g500_refresh_rate_params_t params;
-	if (-1 == logitech_query (fd, LOGITECH_READ_SHORT, G500_QUERY_TYPE_REFRESH_RATE, NULL, (uint8_t *)&params))
+	if (0 != logitech_query (fd, LOGITECH_READ_SHORT, G500_QUERY_TYPE_REFRESH_RATE, NULL, (uint8_t *)&params))
 		return -1;
 	return g500_unpack_refresh_rate (params.refresh_rate);
 }
@@ -116,7 +116,7 @@ int g500_get_refresh_rate (int fd) {
 int g500_set_refresh_rate (int fd, int refresh_rate) {
 	struct g500_refresh_rate_params_t params;
 	params.refresh_rate = g500_pack_refresh_rate (refresh_rate);
-	if (-1 == logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_REFRESH_RATE, (uint8_t *)&params, NULL))
+	if (0 != logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_REFRESH_RATE, (uint8_t *)&params, NULL))
 		return -1;
 	return 0;
 }
@@ -129,7 +129,7 @@ int g500_read_mem (int fd, uint8_t page, uint8_t offset, void *dest, size_t len)
 		params.page = page;
 		params.offset = offset + i/2;
 		params.unknown = 0;
-		if (-1 == logitech_query (fd, LOGITECH_READ_LONG, G500_QUERY_TYPE_MEMORY, (uint8_t *)&params, buffer))
+		if (0 != logitech_query (fd, LOGITECH_READ_LONG, G500_QUERY_TYPE_MEMORY, (uint8_t *)&params, buffer))
 			return -1;
 		memcpy (dest+i, buffer, len-i < 16 ? len-i : 16);
 		i += 16;
@@ -225,7 +225,7 @@ int g500_write_page (int fd, uint8_t page, uint8_t offset, const void *data, siz
 	int seq_num = 0;
 
 	/* Reset seq num */
-	if (-1 == logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_SEQ_NUM, (uint8_t[]) { 0x01, 0, 0 }, NULL)) {
+	if (0 != logitech_query (fd, LOGITECH_SEND_SHORT, G500_QUERY_TYPE_SEQ_NUM, (uint8_t[]) { 0x01, 0, 0 }, NULL)) {
 #ifdef DEBUG
 		fprintf (stderr, "Could not reset sequence number\n");
 #endif
