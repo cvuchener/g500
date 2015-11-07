@@ -55,12 +55,6 @@ The format for report with Sub IDs 0x80 to 0x83 is:
 | 0x0D     | [Battery mileage](commands/0d-battery-mileage.md)     | R   |       |       |         |       |
 | 0x0F     | [Profile related queries](commands/0f-profile.md)     | R/W |       |       | short   | short |
 
-#### 0x20–0x2F: Pairing information registers (UR)
-
-#### 0x30–0x3F: Extended pairing information registers (UR)
-
-#### 0x40–0x4F: Device name registers (UR)
-
 #### 0x50–0x5F: LED registers
 
 | Register | Description                                           | R/W | G5    | G500(s) | G700s |
