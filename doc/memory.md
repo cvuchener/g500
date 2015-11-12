@@ -28,20 +28,52 @@ It can be used to store permanent profiles, macros or any metadata you want.
 
 When writing to this memory, new values are AND’ed over the old ones, so you need to feel the page with FF before writing.
 
-Page 2 is a special page as it contains the profile that the mouse load when it is plugged. It is preferable to keep a sane profile in it.
+#### Profile index (page 1)
+
+Page 1 contains a profile index which is a array of 3-byte items describing a profile.
+
+| Byte | Description              |
+| ---- | ------------------------ |
+| 0    | Profile page             |
+| 1    | ?                        |
+| 2    | Profile LEDs (bit-field) |
+
+A disabled profile is replaced by `ff ff ff` in the profile index.
+
+On the G500, a second profile cannot be enabled and the profile page cannot be changed. Loading the default profile will fail otherwise.
 
 
-### Read-only profiles (pages 17 and 18)
+### Read-only profiles
 
-Page 17 and 18 each contain a profile. They are not the default profile. Page 18 also contains some useful macros.
+Some mice contains read-only profiles at the end of memory:
+ - G500: Page 17 and 18 each contain a profile. They are not the default profile. Page 18 also contains some useful macros.
+ - G500s: No read-only profiles.
+ - G700s: Page 25 and 26 contain profiles. There are no macros.
 
 
 Logitech Gaming Software (LGS) use of memory
 --------------------------------------
 
-### End of page marker
+### Page checksum
 
-At the end of each persistent memory page, LGS write a 16 bits integer for an unknown purpose. Not writing it does not prevent the profile from working.
+At the end of each persistent memory page, LGS write a 16 bits CRC from the 510 previous bytes using the following algorithm (from libratbag):
+
+```
+	crc = 0xFFFF;
+
+	foreach (byte) {
+		temp = (crc >> 8) ^ byte;
+		crc <<= 8;
+		quick = temp ^ (temp >> 4);
+		crc ^= quick;
+		quick <<= 5;
+		crc ^= quick;
+		quick <<= 7;
+		crc ^= quick;
+	}
+```
+
+Its use is unknown. Having an invalid CRC does not prevent the profile from working. LGS does not overwrite a profile with an invalid CRC.
 
 
 ### Page writing
@@ -61,4 +93,4 @@ After the profile on page 2, LGS stores the string “LGS02” and then the macr
 
 ### Macros
 
-LGS writes the first macro at the beginning of page 7 and continue on the next pages if it needs more space. Macros spanning over multiple pages must jump over the end of page marker.
+LGS writes the first macro at the beginning of page 7 and continue on the next pages if it needs more space. Macros spanning over multiple pages must jump over the checksum at the end of page.
