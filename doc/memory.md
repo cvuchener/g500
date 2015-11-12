@@ -56,7 +56,7 @@ Logitech Gaming Software (LGS) use of memory
 
 ### Page checksum
 
-At the end of each persistent memory page, LGS write a 16 bits CRC from the 510 previous bytes using the following algorithm (from libratbag):
+At the end of each persistent memory page, LGS write a 16 bits CRC from the 510 previous bytes using the following algorithm (CRC-CCITT (0xFFFF) from libratbag):
 
 ```
 	crc = 0xFFFF;
