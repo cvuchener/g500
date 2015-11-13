@@ -52,8 +52,15 @@ The format for report with Sub IDs 0x80 to 0x83 is:
 | 0x01     | [Individual features](commands/01-features.md)        | R/W |       | short | short   | short |
 | 0x02     | Connection state                                      | R/W | short |       |         |       |
 | 0x07     | [Battery status](commands/07-battery-status.md)       | R/? |       |       |         | short |
+| 0x09     | ? (bit 8: keyboard Fn swap flag)                      | R/W |       |       |         |       |
 | 0x0D     | [Battery mileage](commands/0d-battery-mileage.md)     | R   |       |       |         |       |
 | 0x0F     | [Profile related queries](commands/0f-profile.md)     | R/W |       |       | short   | short |
+
+#### 0x10–0x1F: ?
+
+| Register | Description                                           | R/W |
+| -------- | ----------------------------------------------------- | --- |
+| 0x17     | Keyboard illumination                                 | ?   |
 
 #### 0x50–0x5F: LED registers
 
