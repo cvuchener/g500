@@ -17,6 +17,18 @@ Instructions
  - **End of macro (0xFF)**
 
 
+### Short delays
+
+Opcodes from 0x80 to 0xfe are delay operations taking only one byte (unlike 0x43).
+ - From 0x80 to 0x9F, delay increments by 4ms starting at 8ms for 0x80 (8ms + (opcode − 0x80) × 4ms).
+ - From 0x9F to 0xC0, delay increments by 8ms starting at 132ms for 0x9F (132ms + (opcode − 0x9F) × 8ms).
+ - From 0xC0 to 0xDF, delay increments by 16ms starting at 404ms for 0xC0 (404ms + (opcode − 0xC0) × 16ms).
+ - From 0xDF to 0xFE, delay increments by 32ms starting at 900ms for 0xDF (900ms + (opcode − 0xDF) × 32ms).
+
+Using short delays instead of 0x43 can make much more compact macros with good approximations for delays up to 1.892ms.
+
+
+
 ### Two bytes instructions
 
  - **Keyboard key press (0x20)**
@@ -133,7 +145,7 @@ These example are built-in examples from page 18 of the G500.
 ```
 22 01	Press left control
 24 01   Scroll the wheel up (+1)
-a8      Delay ? (about 200ms)
+a8      Delay 204ms
 02      Repeat from beginning if the button is still pressed
 23 01   Release left control
 ff      End of macro
@@ -155,7 +167,7 @@ ff         End of macro
 20 15   Press “R”
 23 08   Release left meta
 21 15   Release “R”
-d9      Delay ? (about 800ms)
+d9      Delay 804ms
 20 11   Press “N”
 21 11   Release “N”
 20 12   Press “O”
@@ -206,7 +218,7 @@ ff               End of macro
 61 01 90 12 89 -+   Wait 400ms (0x190), jump to 12:89 if the button is released
 00              |   Do nothing (next instruction needs to be aligned)
 24 01 <-----+   |   Scroll mouse wheel up (+1)
-98          |   |   Delay ? (about 100ms)
+98          |   |   Delay 104ms
 45 12 86 ---+   |   Jump to 12:86 if the button is still pressed
 23 01 <---------+   Release left control
 ff                  End of macro
