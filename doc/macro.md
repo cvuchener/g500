@@ -21,8 +21,8 @@ Instructions
 
 Opcodes from 0x80 to 0xfe are delay operations taking only one byte (unlike 0x43).
  - From 0x80 to 0x9F, delay increments by 4ms starting at 8ms for 0x80 (8ms + (opcode − 0x80) × 4ms).
- - From 0x9F to 0xC0, delay increments by 8ms starting at 132ms for 0x9F (132ms + (opcode − 0x9F) × 8ms).
- - From 0xC0 to 0xDF, delay increments by 16ms starting at 404ms for 0xC0 (404ms + (opcode − 0xC0) × 16ms).
+ - From 0x9F to 0xBF, delay increments by 8ms starting at 132ms for 0x9F (132ms + (opcode − 0x9F) × 8ms).
+ - From 0xBF to 0xDF, delay increments by 16ms starting at 388ms for 0xBF (388ms + (opcode − 0xBF) × 16ms).
  - From 0xDF to 0xFE, delay increments by 32ms starting at 900ms for 0xDF (900ms + (opcode − 0xDF) × 32ms).
 
 Using short delays instead of 0x43 can make much more compact macros with good approximations for delays up to 1.892ms.
