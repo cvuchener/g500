@@ -59,7 +59,9 @@ The special functions are:
  - 0x0004: next DPI mode (G500(s), G700s).
  - 0x0008: previous DPI mode (G500(s), G700s).
  - 0x0009: cycle DPI mode (G700s)
- - 0x0011: switch profile (G700s)
+ - 0x0010: next profile (G500)
+ - 0x0011: cycle profile (G700s)
+ - 0x0020: previous profile (G500)
 
 
 ### 0x84 – Consumer control
