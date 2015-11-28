@@ -5,15 +5,58 @@ Supported devices:
  - G500 (c068)
  - G500s (c24e)
 
-When sending, this message changes the current profile.
-There seems to be 5 possible value for the first byte.
- - 0xFF is used by LGS before writing a new profile. It seems to set a default profile not from the memory.
- - 0x00 is used by LGS after writing the new profile. It sets the mouse to use the default profile at page 0x02.
- - 0x01 sets the current profile to one whose page is in the next byte. (10 00 0F 01 03 00 set the current profile to the one in page 0x03).
- - 0x02 looks similar to 0x00.
- - 0x03 looks similar to 0x01.
+Writing this register will load a profile. Reading gives the index of the current profile (if there is any).
 
-Other values will get an error message.
+The first parameter byte change the way the profile is loaded.
 
-When reading, the first byte will be 0x00 if a profile from memory is used or 0xFF if no profile is used.
+
+0xFF – Factory default
+----------------------
+
+0xFF load the factory default profile. This profile is also loaded when the profile directory page contains invalid data.
+
+This value is read from the register when the factory default is loaded.
+
+LGS load this profile before writing a new profile but it is not necessary.
+
+Parameters (read and write) are:
+
+| Bytes | Content        |
+| ----- | -------------- |
+| 0     | 0xFF           |
+| 1–2   | Unused (0x00)  |
+
+
+0x00 – Profile index
+--------------------
+
+0x00 (or 0x02) load the profile from the [profile directory](../memory.md#profile-directory-page-1) with the given index.
+
+Using an index too high will load the last profile.
+
+LGS use this method after writing the new profile in order to update the current profile from memory.
+
+Parameters (read and write) are:
+
+| Bytes | Content        |
+| ----- | -------------- |
+| 0     | 0x00           |
+| 1     | Profile index  |
+| 2     | Unused (0x00)  |
+
+
+0x01 – Profile address
+----------------------
+
+0x01 (or 0x03) load the profile from the given address.
+
+After loading a profile with this method, reading the register will gives the profile index (byte 0 is 0x00), as if the current profile was overwritten by the new profile.
+
+Parameters (write only) are:
+
+| Bytes | Content        |
+| ----- | -------------- |
+| 0     | 0x01           |
+| 1     | Profile page   |
+| 2     | Profile offset |
 

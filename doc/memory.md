@@ -26,21 +26,24 @@ Data written in the pages 1 to 16 will persist after unplugging the mouse. Thus 
 
 It can be used to store permanent profiles, macros or any metadata you want.
 
-When writing to this memory, new values are AND’ed over the old ones, so you need to feel the page with FF before writing.
+When writing to this memory, new values are AND’ed over the old ones, so you need to fill the page with FF before writing.
 
-#### Profile index (page 1)
 
-Page 1 contains a profile index which is a array of 3-byte items describing a profile.
+#### Profile directory (page 1)
 
-| Byte | Description              |
-| ---- | ------------------------ |
-| 0    | Profile page             |
-| 1    | ?                        |
-| 2    | Profile LEDs (bit-field) |
+The profile directory is variable length array telling the mouse where are the profiles. It is always located at the beginning of page 1.
 
-A disabled profile is replaced by `ff ff ff` in the profile index.
+Each entry is 3 byte long:
 
-On the G500, a second profile cannot be enabled and the profile page cannot be changed. Loading the default profile will fail otherwise.
+| Bytes | Content            |
+| ----- | ------------------ |
+| 0     | Profile page       |
+| 1     | Profile offset     |
+| 2     | LED bit-field?     |
+
+The array is terminated by a single 0xFF byte.
+
+The checksum at the end of page 1 must be valid for the profile directory to be correctly loaded. If the checksum is invalid a factory default profile is loaded.
 
 
 ### Read-only profiles
