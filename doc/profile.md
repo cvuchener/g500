@@ -12,7 +12,7 @@ There are different structures for profiles:
    - G500 (c068)
    - G500s (c24e)
  - [Profile for G700s](profile/g700s.md) supported by:
-   - G700s
+   - G700s (c70c)
 
 Button binding
 --------------
@@ -21,7 +21,7 @@ Supported devices:
  - G9 (c048)
  - G500 (c068)
  - G500s (c24e)
- - G700s
+ - G700s (c70c)
 
 Each button is 3 byte long.  The first byte indicate the binding type, the next two bytes depends on the type:
 
@@ -57,13 +57,17 @@ The special functions are:
  - 0x0002: pan right (horizontal wheel +1) (G500(s), G700s).
  - 0x0003: battery level (G700s)
  - 0x0004: next DPI mode (G500(s), G700s).
+ - 0x0005: cycle DPI mode up (G700s).
  - 0x0008: previous DPI mode (G500(s), G700s).
- - 0x0009: cycle DPI mode (G700s)
- - 0x0010: next profile (G500)
+ - 0x0009: cycle DPI mode down (G700s)
+ - 0x0010: next profile (G500, G700s)
  - 0x0011: cycle profile (G700s)
- - 0x0020: previous profile (G500)
-
-
+ - 0x0020: previous profile (G500, G700s)
+ - 0x0040: switch to profile 1 (G700s)
+ - 0x0080: battery level (G700s)
+ - 0x0100: battery level (G700s)
+ - 0x0105: same as 0x0005 used in default profile on page 25 (G700s)
+ 
 ### 0x84 – Consumer control
 
 The next bytes are a 16 bits big-endian integer containing the HID usage from the consumer control page.
