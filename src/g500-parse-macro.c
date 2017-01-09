@@ -42,9 +42,10 @@ int main (int argc, char *argv[]) {
 	int offset = 0;
 	if (argc > 1)
 		offset = strtol (argv[1], NULL, 0);
-	
+
 	int i = 2*offset;
 	int end = 0;
+    int j;
 	while (!end) {
 		struct g500_macro_item_t *macro_item = (struct g500_macro_item_t *)&buffer[i];
 		if (i % 2 == 0)
@@ -69,16 +70,92 @@ int main (int argc, char *argv[]) {
 			end = 1;
 			break;
 		case G500_MACRO_KEY_PRESS:
-			printf ("KEY PRESS 0x%02hhX\n", macro_item->value.key_usage);
+			/*if pressed key is letter print it instead of hid code */
+			if ((macro_item->value.key_usage > 0x03) && (macro_item->value.key_usage < 0x1E))
+				printf ("KEY PRESS %c\n", macro_item->value.key_usage - 0x04 + 0x41);
+			else
+				printf ("KEY PRESS 0x%02hhX\n", macro_item->value.key_usage);
 			break;
 		case G500_MACRO_KEY_RELEASE:
-			printf ("KEY RELEASE 0x%02hhX\n", macro_item->value.key_usage);
+			/*if released key is letter print it instead of hid code */
+			if ((macro_item->value.key_usage > 0x03) && (macro_item->value.key_usage < 0x1E))
+				printf ("KEY RELEASE %c\n", macro_item->value.key_usage - 0x04 + 0x41);
+			else
+				printf ("KEY RELEASE 0x%02hhX\n", macro_item->value.key_usage);
 			break;
 		case G500_MACRO_MODIFIER_PRESS:
-			printf ("MODIFIER PRESS 0x%02hhX\n", macro_item->value.modifier_bits);
+			printf("MODIFIER PRESS ");
+            for(j = 0; j < 8; ++j){
+                if (macro_item->value.modifier_bits & (1<<j)){
+                    switch(j + 0xE0 - 1){
+                        case 0xE0:
+                            printf("LeftControl ");
+                            break;
+                        case 0xE1:
+                            printf("LeftShift ");
+                            break;
+                        case 0xE2:
+                            printf("LeftAlt ");
+                            break;
+                        case 0xE3:
+                            printf("Left GUI ");
+                            break;
+                        case 0xE4:
+                            printf("RightControl ");
+                            break;
+                        case 0xE5:
+                            printf("RightShift ");
+                            break;
+                        case 0xE6:
+                            printf("RightAlt ");
+                            break;
+                        case 0xE7:
+                            printf("Right GUI ");
+                            break;
+                        default:
+                            printf ("0x%02hhX\n", macro_item->value.modifier_bits);
+
+                    }
+                }
+            }
+            printf("\n");
 			break;
 		case G500_MACRO_MODIFIER_RELEASE:
-			printf ("MODIFIER RELEASE 0x%02hhX\n", macro_item->value.modifier_bits);
+			printf("MODIFIER RELEASE ");
+            for(j = 0; j < 8; ++j){
+                if (macro_item->value.modifier_bits & (1<<j)){
+                    switch(j + 0xE0 - 1){
+                        case 0xE0:
+                            printf("LeftControl ");
+                            break;
+                        case 0xE1:
+                            printf("LeftShift ");
+                            break;
+                        case 0xE2:
+                            printf("LeftAlt ");
+                            break;
+                        case 0xE3:
+                            printf("Left GUI ");
+                            break;
+                        case 0xE4:
+                            printf("RightControl ");
+                            break;
+                        case 0xE5:
+                            printf("RightShift ");
+                            break;
+                        case 0xE6:
+                            printf("RightAlt ");
+                            break;
+                        case 0xE7:
+                            printf("Right GUI ");
+                            break;
+                        default:
+                            printf ("0x%02hhX\n", macro_item->value.modifier_bits);
+
+                    }
+                }
+            }
+            printf("\n");
 			break;
 		case G500_MACRO_WHEEL:
 			printf ("WHEEL %hhd\n", macro_item->value.wheel);
