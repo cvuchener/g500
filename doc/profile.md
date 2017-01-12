@@ -12,7 +12,7 @@ There are different structures for profiles:
    - G500 (c068)
    - G500s (c24e)
  - [Profile for G700s](profile/g700s.md) supported by:
-   - G700s
+   - G700s (c70c)
 
 Button binding
 --------------
@@ -21,7 +21,7 @@ Supported devices:
  - G9 (c048)
  - G500 (c068)
  - G500s (c24e)
- - G700s
+ - G700s (c70c)
 
 Each button is 3 byte long.  The first byte indicate the binding type, the next two bytes depends on the type:
 
@@ -47,23 +47,29 @@ The modifier bit-field and the key usage use the same structure as in the HID ke
 
 ### 0x83 – Special G500 function
 
-| Bytes | Type       | Content            | Comment                  |
-| ----- | ---------- | ------------------ | ------------------------ |
-| 0     | byte       | binding type       | 0x83                     |
-| 1–2   | int16 le   | special function   |                          |
+| Bytes | Type       | Content            | Comment       |
+| ----- | ---------- | ------------------ | ------------- |
+| 0     | byte       | binding type       | 0x83          |
+| 1     | byte       | special function   |               |
+| 2     | byte       | argument           | see below     |
 
 The special functions are:
- - 0x0001: pan left (horizontal wheel −1) (G500(s), G700s).
- - 0x0002: pan right (horizontal wheel +1) (G500(s), G700s).
- - 0x0003: battery level (G700s)
- - 0x0004: next DPI mode (G500(s), G700s).
- - 0x0008: previous DPI mode (G500(s), G700s).
- - 0x0009: cycle DPI mode (G700s)
- - 0x0010: next profile (G500)
- - 0x0011: cycle profile (G700s)
- - 0x0020: previous profile (G500)
+ - 0x01: pan left (horizontal wheel −1) (G500(s), G700s).
+ - 0x02: pan right (horizontal wheel +1) (G500(s), G700s).
+ - 0x03: battery level (G700s)
+ - 0x04: next DPI mode (G500(s), G700s).
+ - 0x05: cycle DPI mode up (G700s).
+ - 0x08: previous DPI mode (G500(s), G700s).
+ - 0x09: cycle DPI mode down (G700s)
+ - 0x10: next profile (G500, G700s)
+ - 0x11: cycle profile up(G700s)
+ - 0x20: previous profile (G500, G700s)
+ - 0x21: cycle profile down (G700s)
+ - 0x40: switch to profile with number in argument. Works in profiles that are not in the index (G700s)
 
+For functions 0x04, 0x05, 0x08 and 0x09 if argument is non-zero, additionaly to special function behaviour, button sends its own "Mouse button X"
 
+ 
 ### 0x84 – Consumer control
 
 The next bytes are a 16 bits big-endian integer containing the HID usage from the consumer control page.
