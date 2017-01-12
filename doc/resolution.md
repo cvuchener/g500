@@ -49,7 +49,7 @@ The resolution is two 16 bits integer (X and Y axes).
 Highest resolution is 0x00F3 (5700 dpi).
 
 
-### G500s
+### G500s, G700s
 
 The resolution is two 16 bits integer (X and Y axes).
 
