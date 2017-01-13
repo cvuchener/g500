@@ -50,24 +50,27 @@ The modifier bit-field and the key usage use the same structure as in the HID ke
 | Bytes | Type       | Content            | Comment       |
 | ----- | ---------- | ------------------ | ------------- |
 | 0     | byte       | binding type       | 0x83          |
-| 1     | byte       | special function   |               |
-| 2     | byte       | argument           | see below     |
+| 1     | byte       | special function   | see below     |
+| 2     | byte       | optional argument  | see below     |
 
 The special functions are:
- - 0x01: pan left (horizontal wheel −1) (G500(s), G700s).
- - 0x02: pan right (horizontal wheel +1) (G500(s), G700s).
- - 0x03: battery level (G700s)
- - 0x04: next DPI mode (G500(s), G700s).
- - 0x05: cycle DPI mode up (G700s).
- - 0x08: previous DPI mode (G500(s), G700s).
- - 0x09: cycle DPI mode down (G700s)
- - 0x10: next profile (G500, G700s)
- - 0x11: cycle profile up(G700s)
- - 0x20: previous profile (G500, G700s)
- - 0x21: cycle profile down (G700s)
- - 0x40: switch to profile with number in argument. Works in profiles that are not in the index (G700s)
 
-For functions 0x04, 0x05, 0x08 and 0x09 if argument is non-zero, additionaly to special function behaviour, button sends its own "Mouse button X"
+| Byte 1 | Byte 2        | Function                        | Mouse support  |
+| ------ | ------------- | ------------------------------- | -------------- |
+| 0x01   |               | pan left (horizontal wheel −1)  | G500(s), G700s |
+| 0x02   |               | pan right (horizontal wheel +1) | G500(s), G700s |
+| 0x03   |               | battery level                   | G700s          |
+| 0x04   | send event\*  | next DPI mode                   | G500(s), G700s |
+| 0x05   | send event\*  | cycle DPI mode up               | G700s          |
+| 0x08   | send event\*  | previous DPI mode               | G500(s), G700s |
+| 0x09   | send event\*  | cycle DPI mode down             | G700s          |
+| 0x10   |               | next profile                    | G500(s), G700s |
+| 0x11   |               | cycle profile up                | G700s          |
+| 0x20   |               | previous profile                | G500(s), G700s |
+| 0x21   |               | cycle profile down              | G700s          |
+| 0x40   | profile index | switch to profile in argument   | G500(s), G700s |
+
+\* If the argument is non-zero, the generic mouse button event is sent, additionaly to special function behaviour.
 
  
 ### 0x84 – Consumer control
